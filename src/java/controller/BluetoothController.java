@@ -2,10 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
-import ch.aplu.xboxcontroller.XboxController;
-import ch.aplu.xboxcontroller.XboxControllerListener;
 import model.BluetoothManager;
 import view.BluetoothPanel;
 

@@ -1,13 +1,18 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 import controller.XBoxCtrlListener.Movement;
 
 public class BluetoothManager {
 	
-	public Socket socket;
+	
+	private Socket socket;
+	private BufferedReader bufferedReader;
 	int PORT = 5000;
 	public BluetoothManager(){
 		socket = null;
@@ -16,11 +21,41 @@ public class BluetoothManager {
 	public boolean connect(String ip){
 		try {
 			socket = new Socket(ip, PORT);
+			Thread t = new Thread() {
+				
+				@Override
+				public void run() {
+					listen();
+				}
+			};
+			t.start();
+			
 		} catch (Exception e){
 			return false;
 		}
 		return true;
+	
 	}
+	
+	
+	public void listen(){
+		String fromclient;
+
+		
+		try {
+			bufferedReader = new BufferedReader(new InputStreamReader (socket.getInputStream()));
+
+			while( ! socket.isClosed()) {
+					fromclient = bufferedReader.readLine();
+					System.out.println(fromclient);
+			}
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+	}
+	
 	
 	public void sendMovement(Movement m) {
 		if (socket != null && socket.isConnected() && !socket.isClosed()){

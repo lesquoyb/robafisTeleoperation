@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
@@ -8,7 +7,6 @@ import javax.swing.JFrame;
 import ch.aplu.xboxcontroller.XboxController;
 import controller.BluetoothController;
 import controller.JoystickController;
-import javafx.scene.layout.VBox;
 import model.BluetoothManager;
 
 public class MainView extends JFrame {
@@ -19,9 +17,11 @@ public class MainView extends JFrame {
 		setTitle("Lego Rangers");
 		setLocationRelativeTo(null);
 		setLayout(new GridLayout(3,1));
-		add(new BluetoothPanel(new BluetoothController(new BluetoothManager()))) ;
-		add(new JoystickPanel(new JoystickController(new XboxController())));
+		BluetoothController b = new BluetoothController(new BluetoothManager());
+		add(new BluetoothPanel(b)) ;
+		add(new JoystickPanel(new JoystickController(new XboxController(), b) ));
 		add(new RobotPanel());
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}

@@ -1,0 +1,89 @@
+<HTML>
+<HEAD>
+<Title>The First JSP Project</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">The First JSP Project</p>
+<hr class="separator">
+<div class="content"><img src="images/simplebar.png"><br><br>
+This section introduces using ChartDirector in JSP . If you are using ChartDirector in standalone Java application, you may refer to <a href="firstjavaproject.htm">The First Java Project</a> instead.<br><br>
+To get a feeling of using ChartDirector, and to verify the ChartDirector development environment is set up properly, we will begin by building a very simple bar chart.<br><br>
+The following code is based on the sample programs that come with ChartDirector. If you have not yet installed the sample programs, it is highly recommended you install them now. Please refer to the <a href="install.htm"> Installation</a> section for details. They are very useful for exploring and testing the features of ChartDirector.<br><br>
+<b>[JSP Version]</b> jspdemo/simplebar.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%
+// The data for the bar chart
+double[] data = {85, 156, 179.5, 211, 123};
+
+// The labels for the bar chart
+String[] labels = {"Mon", "Tue", "Wed", "Thu", "Fri"};
+
+// Create a XYChart object of size 250 x 250 pixels
+XYChart c = new XYChart(250, 250);
+
+// Set the plotarea at (30, 20) and of size 200 x 200 pixels
+c.setPlotArea(30, 20, 200, 200);
+
+// Add a bar chart layer using the given data
+c.addBarLayer(data);
+
+// Set the labels on the x axis.
+c.xAxis().setLabels(labels);
+
+// Output the chart
+String chart1URL = c.makeSession(request, "chart1");
+
+// Include tool tip for the chart
+String imageMap1 = c.getHTMLImageMap("", "", "title='{xLabel}: {value} GBytes'");
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Simple Bar Chart (1)
+&lt;/div&gt;
+&lt;hr color="#000080"&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:1.5em"&gt;
+    &lt;a href="viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;'
+    usemap="#map1" border="0"&gt;
+&lt;map name="map1"&gt;&lt;%=imageMap1%&gt;&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br>
+The code is explained below:<br><br>
+<ul>
+<li><pre>&lt;%@page import="ChartDirector.*" %&gt;</pre><br>
+The above line imports the ChartDirector namespace into the program to simplify the code. Instead of writing "ChartDirector.XYChart", you can simply write "XYChart".<br><br>
+<li><pre>XYChart c = new <a href="XYChart.XYChart.htm">XYChart</a>(250, 250);</pre><br>
+The first step in creating any chart in ChartDirector is to create the appropriate chart object. In this example, an <a href="XYChart.htm">XYChart</a> object of size 250 x 250 pixels is created. In ChartDirector, XYChart represents any chart that has x- axis and y-axis, such as the bar chart we are drawing.<br><br>
+<li><pre>c.<a href="XYChart.setPlotArea.htm">setPlotArea</a>(30, 20, 200, 200);</pre><br>
+The second step in creating a bar chart is to specify where should we draw the bar chart. This is by specifying the rectangle that contains the bar chart. The rectangle is specified by using the (x, y) coordinates of its top-left corner, together with its width and height.<br><br>
+For this simple bar chart, we will use the majority of the chart area to draw the bar chart. We will leave some margin to allow for the text labels on the axis. In the above code, the top-left corner is set to (30, 30), and both the width and height is set to 200 pixels. Since the entire chart is 250 x 250 in size, there will be 20 to 30 pixels margin for the text labels.<br><br>
+Note that ChartDirector uses a pixel coordinate system that is customary for computer screen. The x pixel coordinate is increasing from left to right. The y pixel coordinate is increasing from top to bottom. The origin (0, 0) is at the top-left corner.<br><br>
+For more complex charts which may contain titles, legend box and other things, we can use this method (and other methods) to design the exact layout of the entire chart.<br><br>
+<li><pre>c.<a href="XYChart.addBarLayer.htm">addBarLayer</a>(data);</pre><br>
+The above code adds a bar layer to the XYChart. In ChartDirector, any chart type that has x-axis and y-axis is represented as a layer in the XYChart. An XYChart can contain multiple layers. This allows "combination charts" to be created easily by combining different layers on the same chart (eg., a chart containing a line layer on top of a bar layer) .<br><br>
+In the above line of code, the argument is an array of numbers representing the values of the data points.<br><br>
+<li><pre>c.<a href="XYChart.xAxis.htm">xAxis</a>().<a href="Axis.setLabels.htm">setLabels</a>(labels);</pre><br>
+The above code sets the labels on the x-axis. The first method <a href="XYChart.xAxis.htm">XYChart.xAxis</a> retrieves the <a href="Axis.htm">Axis</a> object that represents the x-axis. The second method <a href="Axis.setLabels.htm">Axis.setLabels</a> binds the text labels to the x-axis. The argument to the setLabels method is an array of text strings.<br><br>
+<li><pre>String chart1URL = c.<a href="BaseChart.makeSession.htm">makeSession</a>(request, "chart1");</pre><br>
+Up to this point, the chart is completed. The above code uses <a href="BaseChart.makeSession.htm">BaseChart.makeSession</a> to output the chart image into a session variable called "chart1".<br><br>
+We need to store the image in a session variable because we cannot deliver the image to the browser now. In HTML, we need to send an &lt;IMG&gt; tag to the browser first. The browser will then use the URL in the &lt;IMG&gt; to get the chart image from another HTTP connection.<br><br>
+BaseChart.makeSession returns a URL query that can be used in the &lt;IMG&gt; tag to reference the image (see below).<br><br>
+By default, BaseChart.makeSession outputs in PNG format, which is supported by all major browsers. You may also use other formats (such as GIF and JPG). Please refer to <a href="BaseChart.makeSession.htm">BaseChart.makeSession</a> for details.<br><br>
+<li><pre>String imageMap1 = c.<a href="BaseChart.getHTMLImageMap.htm">getHTMLImageMap</a>("", "", "title='{xLabel}: US${value}K'");</pre><br>
+After displaying the chart, an image map can be created for the chart to configure mouse interactions. In this example, the image map is configured to display tool tips of the format <code>"title='{xLabel}: US${value}K'"</code> when the mouse cursor is on top of the bars.<br><br>
+Note that mouse interactions are optional. Your can always leave out the <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a> code if mouse interactions are not required.<br><br>
+<li><pre>&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;'
+    usemap="#map1" border="0"&gt;
+&lt;map name="map1"&gt;&lt;%=imageMap1%&gt;&lt;/map&gt;</pre><br>
+The &lt;IMG&gt; tag above instructs the browser to load the chart image. The URL of the chart image is <i>("getchart.jsp?"+chart1URL)</i>. The <a href="getchart.jsp.htm">getchart.jsp</a> is a standard JSP that comes with ChartDirector. It uses the query <i>chart1URL</i> returned by <a href="BaseChart.makeSession.htm">BaseChart.makeSession</a> to retrieve the chart image from the session variable, and delivers it to the browser.<br><br>
+ChartDirector also comes with a <a href="GetSessionImage.htm">GetSessionImage</a> servlet that provides the same function as <a href="getchart.jsp.htm">getchart.jsp</a>. This servlet is useful for servlet applications that do not use JSP.<br><br>
+The <i>response.encodeURL</i> method above is a method of the standard Java class javax.servlet.http.HttpServletResponse. It encodes the URL if the browser does not support cookies, so as to ensure session variables can work without using cookies.<br><br>
+The <i>usemap</i> attribute and the &lt;MAP&gt; tag above instruct the browser to apply the image map to the chart image for providing tool tips support.<br><br>
+</ul>
+<div style="background-color:#cccccc;width:99%;padding:10px"> <b>Note:</b> The trial version of ChartDirector will include small yellow banners at the bottom of the charts it produces. These banners will disappear in the licensed version of ChartDirector. </div></div><br>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

@@ -1,0 +1,265 @@
+<HTML>
+<HEAD>
+<Title>Database Clickable Charts</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Database Clickable Charts</p>
+<hr class="separator">
+<div class="content"><img src="images/dbclickable_doc.png"><br><br>
+In this section, we will present an example that employs both database and image maps.<br><br>
+This example displays a bar chart that shows the revenue for the last 10 years. When the user clicks on a bar, it will "drill down" to another bar chart showing the monthly revenue for the year represented by the bar clicked. All data come from a database.<br><br>
+The code that creates the clickable bar chart for the last 10 years are as follows.<br><br>
+<b>[JSP Version]</b> jspdemo/dbdemo3.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%
+// SQL statement to get the revenue for the 12 years from 1990 to 2001
+String SQL =
+    "Select Sum(Software + Hardware + Services), Year(TimeStamp) From revenue Where " +
+    "Year(TimeStamp) &gt;= 1990 And Year(TimeStamp) &lt;= 2001 Group By Year(TimeStamp) Order By " +
+    "Year(TimeStamp)";
+
+//
+// Connect to database and read the query result into arrays
+//
+
+// In this example, we use an MS Access database through an ODBC driver.
+String dbFile = new java.io.File(application.getRealPath(request.getServletPath())
+    ).getParent() + "/sample.mdb";
+
+// Connect to database and prepare the query
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+java.sql.Connection dbConn = java.sql.DriverManager.getConnection
+    ("jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=" + dbFile);
+java.sql.PreparedStatement stmt = dbConn.prepareStatement(SQL);
+
+// Execute the query and read the results into arrays
+DBTable table = new DBTable(stmt.executeQuery());
+double[] revenue = table.getCol(0);
+double[] timestamp = table.getCol(1);
+
+stmt.close();
+dbConn.close();
+
+//
+// Now we have read data into arrays, we can draw the chart using ChartDirector
+//
+
+// Create a XYChart object of size 600 x 360 pixels
+XYChart c = new XYChart(600, 360);
+
+// Set the plotarea at (60, 40) and of size 480 x 280 pixels. Use a vertical gradient color from
+// light blue (eeeeff) to deep blue (0000cc) as background. Set border and grid lines to white
+// (ffffff).
+c.setPlotArea(60, 40, 480, 280, c.linearGradientColor(60, 40, 60, 280, 0xeeeeff, 0x0000cc), -1,
+    0xffffff, 0xffffff);
+
+// Add a title to the chart using 18pt Times Bold Italic font
+c.addTitle("Annual Revenue for Star Tech", "Times New Roman Bold Italic", 18);
+
+// Add a multi-color bar chart layer using the supplied data
+BarLayer layer = c.addBarLayer3(revenue);
+
+// Use glass lighting effect with light direction from the left
+layer.setBorderColor(Chart.Transparent, Chart.glassEffect(Chart.NormalGlare, Chart.Left));
+
+// Set the x axis labels
+c.xAxis().setLabels(timestamp);
+
+// Set y-axis tick density to 30 pixels. ChartDirector auto-scaling will use this as the guideline
+// when putting ticks on the y-axis.
+c.yAxis().setTickDensity(30);
+
+// Synchronize the left and right y-axes
+c.syncYAxis();
+
+// Set the y axes titles with 10pt Arial Bold font
+c.yAxis().setTitle("USD (Millions)", "Arial Bold", 10);
+c.yAxis2().setTitle("USD (Millions)", "Arial Bold", 10);
+
+// Set all axes to transparent
+c.xAxis().setColors(Chart.Transparent);
+c.yAxis().setColors(Chart.Transparent);
+c.yAxis2().setColors(Chart.Transparent);
+
+// Set the label styles of all axes to 8pt Arial Bold font
+c.xAxis().setLabelStyle("Arial Bold", 8);
+c.yAxis().setLabelStyle("Arial Bold", 8);
+c.yAxis2().setLabelStyle("Arial Bold", 8);
+
+// Create the image
+String chart1URL = c.makeSession(request, "chart1");
+
+// Create an image map for the chart
+String imageMap1 = c.getHTMLImageMap("dbdemo3a.jsp", "", "title='{xLabel}: US$ {value|0}M'");
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Database Clickable Charts
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; width:600px; margin-bottom:20px"&gt;
+    The example demonstrates creating a clickable chart using data from a database.
+    Click on a bar below to "drill down" onto a particular year.
+&lt;br /&gt;&lt;br /&gt;
+&lt;a href='viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;'&gt;
+    View source code
+&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;img src="&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;" border="0" usemap="#map1"&gt;
+&lt;map name="map1"&gt;
+&lt;%=imageMap1%&gt;
+&lt;/map&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br>
+The above code first performs a database query and read the data into arrays. It then uses the data to create a bar chart. The image map for the chart is created using <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a> with "dbdemo3a.jsp" as the handler.<br><br>
+When the user clicks on the bar chart, "dbdemo3a.jsp" will be invoked with a number of HTTP query parameters to indicate which bar the user has clicked. In particular, the xLabel parameter will contain the x-axis label for the bar clicked. With this parameter, "dbdemo3a.jsp" can determine which year the user has clicked. It can then query the database for the data in that year, and produces the bar chart for that year.<br><br>
+In this example, "dbdemo3a.jsp" will produce another clickable chart using "xystub.jsp" as the handler.<br><br>
+<b>[JSP Version]</b> jspdemo/dbdemo3a.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%
+//
+// Displays the monthly revenue for the selected year. The selected year should be passed in as a
+// query parameter called "xLabel"
+//
+int selectedYear = (request.getParameter("xLabel") == null) ? 2001 :
+    Integer.parseInt(request.getParameter("xLabel"));
+
+// SQL statement to get the monthly revenues for the selected year.
+String SQL = "Select Software, Hardware, Services From revenue Where Year(TimeStamp) = " +
+    selectedYear + " Order By TimeStamp";
+
+//
+// Connect to database and read the query result into arrays
+//
+
+// In this example, we use an MS Access database through an ODBC driver.
+String dbFile = new java.io.File(application.getRealPath(request.getServletPath())
+    ).getParent() + "/sample.mdb";
+
+// Connect to database and prepare the query
+Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+java.sql.Connection dbConn = java.sql.DriverManager.getConnection
+    ("jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=" + dbFile);
+java.sql.PreparedStatement stmt = dbConn.prepareStatement(SQL);
+
+// Execute the query and read the results into arrays
+DBTable table = new DBTable(stmt.executeQuery());
+double[] software = table.getCol(0);
+double[] hardware = table.getCol(1);
+double[] services = table.getCol(2);
+
+stmt.close();
+dbConn.close();
+
+//
+// Now we have read data into arrays, we can draw the chart using ChartDirector
+//
+
+// Create a XYChart object of size 600 x 360 pixels
+XYChart c = new XYChart(600, 360);
+
+// Set the plotarea at (60, 50) and of size 480 x 270 pixels. Use a vertical gradient color from
+// light blue (eeeeff) to deep blue (0000cc) as background. Set border and grid lines to white
+// (ffffff).
+c.setPlotArea(60, 50, 480, 270, c.linearGradientColor(60, 50, 60, 270, 0xeeeeff, 0x0000cc), -1,
+    0xffffff, 0xffffff);
+
+// Add a title to the chart using 15pt Times Bold Italic font
+c.addTitle("Global Revenue for Year " + selectedYear, "Times New Roman Bold Italic", 18);
+
+// Add a legend box at (60, 25) (top of the plotarea) with 9pt Arial Bold font
+c.addLegend(60, 25, false, "Arial Bold", 9).setBackground(Chart.Transparent);
+
+// Add a line chart layer using the supplied data
+LineLayer layer = c.addLineLayer2();
+layer.addDataSet(software, 0xffaa00, "Software").setDataSymbol(Chart.CircleShape, 9);
+layer.addDataSet(hardware, 0x00ff00, "Hardware").setDataSymbol(Chart.DiamondShape, 11);
+layer.addDataSet(services, 0xff0000, "Services").setDataSymbol(Chart.Cross2Shape(), 11);
+
+// Set the line width to 3 pixels
+layer.setLineWidth(3);
+
+// Set the x axis labels. In this example, the labels must be Jan - Dec.
+String[] labels = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov",
+    "Dec"};
+c.xAxis().setLabels(labels);
+
+// Set y-axis tick density to 30 pixels. ChartDirector auto-scaling will use this as the guideline
+// when putting ticks on the y-axis.
+c.yAxis().setTickDensity(30);
+
+// Synchronize the left and right y-axes
+c.syncYAxis();
+
+// Set the y axes titles with 10pt Arial Bold font
+c.yAxis().setTitle("USD (Millions)", "Arial Bold", 10);
+c.yAxis2().setTitle("USD (Millions)", "Arial Bold", 10);
+
+// Set all axes to transparent
+c.xAxis().setColors(Chart.Transparent);
+c.yAxis().setColors(Chart.Transparent);
+c.yAxis2().setColors(Chart.Transparent);
+
+// Set the label styles of all axes to 8pt Arial Bold font
+c.xAxis().setLabelStyle("Arial Bold", 8);
+c.yAxis().setLabelStyle("Arial Bold", 8);
+c.yAxis2().setLabelStyle("Arial Bold", 8);
+
+// Create the image and save it in a temporary location
+String chart1URL = c.makeSession(request, "chart1");
+
+// Create an image map for the chart
+String imageMap1 = c.getHTMLImageMap("xystub.jsp", "",
+    "title='{dataSetName} @ {xLabel} = USD {value|0}M'");
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Database Clickable Charts
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; width:600px; margin-bottom:20px"&gt;
+    You have click the bar for the year &lt;%=selectedYear%&gt;.
+    Below is the "drill-down" chart showing the monthly details.
+&lt;br /&gt;&lt;br /&gt;
+&lt;a href='viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;'&gt;
+    View source code
+&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;img src="&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;" border="0" usemap="#map1"&gt;
+&lt;map name="map1"&gt;
+&lt;%=imageMap1%&gt;
+&lt;/map&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br>
+For demo purpose, "xystub.jsp" simply displays information on what is clicked. It's source code is as follows.<br><br>
+<b>[JSP Version]</b> jspdemo/xystub.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Simple Clickable XY Chart Handler
+&lt;/div&gt;
+&lt;hr style="border:solid 1px #000080" /&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:20px"&gt;
+    &lt;a href="viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;div style="font-size:10pt; font-family:verdana;"&gt;
+&lt;b&gt;You have clicked on the following chart element :&lt;/b&gt;&lt;br /&gt;
+&lt;ul&gt;
+    &lt;li&gt;Data Set : &lt;%=request.getParameter("dataSetName")%&gt;&lt;/li&gt;
+    &lt;li&gt;X Position : &lt;%=request.getParameter("x")%&gt;&lt;/li&gt;
+    &lt;li&gt;X Label : &lt;%=request.getParameter("xLabel")%&gt;&lt;/li&gt;
+    &lt;li&gt;Data Value : &lt;%=request.getParameter("value")%&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table></div><br>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

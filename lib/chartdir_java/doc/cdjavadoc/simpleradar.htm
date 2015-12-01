@@ -1,0 +1,131 @@
+<HTML>
+<HEAD>
+<Title>Simple Radar Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Simple Radar Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/simpleradar.png">
+<br><br>
+This example demonstrates the basic steps in creating radar charts.<br><br>
+<ul><li> Create a <a href="PolarChart.htm">PolarChart</a> object using <a href="PolarChart.PolarChart.htm">PolarChart.PolarChart</a>.<br><br>
+<li> Specify the polar plot area of the chart using <a href="PolarChart.setPlotArea.htm">PolarChart.setPlotArea</a>.<br><br>
+<li> Add a polar area layer and specify the data for the area using <a href="PolarChart.addAreaLayer.htm">PolarChart.addAreaLayer</a>.<br><br>
+<li> Specify the labels on the angular axis using <a href="AngularAxis.setLabels.htm">AngularAxis.setLabels</a>. In a polar/radar chart, the radial axis refers to the axis from the center to the perimeter of the plot area, and the angular axis refers to the axis lying on the perimeter of the plot area.<br><br>
+<li> Generate the chart using <a href="BaseChart.makeSession.htm">BaseChart.makeSession</a> (JSP version) or <a href="BaseChart.makeImage.htm">BaseChart.makeImage</a> (Java version).<br><br>
+<li> Generate tool tips for the chart using <a href="BaseChart.getHTMLImageMap.htm">BaseChart.getHTMLImageMap</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[JSP Version]</b> jspdemo/simpleradar.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%
+// The data for the chart
+double[] data = {90, 60, 65, 75, 40};
+
+// The labels for the chart
+String[] labels = {"Speed", "Reliability", "Comfort", "Safety", "Efficiency"};
+
+// Create a PolarChart object of size 450 x 350 pixels
+PolarChart c = new PolarChart(450, 350);
+
+// Set center of plot area at (225, 185) with radius 150 pixels
+c.setPlotArea(225, 185, 150);
+
+// Add an area layer to the polar chart
+c.addAreaLayer(data, 0x9999ff);
+
+// Set the labels to the angular axis as spokes
+c.angularAxis().setLabels(labels);
+
+// Output the chart
+String chart1URL = c.makeSession(request, "chart1");
+
+// Include tool tip for the chart
+String imageMap1 = c.getHTMLImageMap("", "", "title='{label}: score = {value}'");
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Simple Radar Chart
+&lt;/div&gt;
+&lt;hr color="#000080"&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:1.5em"&gt;
+    &lt;a href="viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;'
+    usemap="#map1" border="0"&gt;
+&lt;map name="map1"&gt;&lt;%=imageMap1%&gt;&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br><b>[Java Version]</b> javademo/simpleradar.java
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import ChartDirector.*;
+
+public class simpleradar implements DemoModule
+{
+    //Name of demo program
+    public String toString() { return "Simple Radar Chart"; }
+
+    //Number of charts produced in this demo
+    public int getNoOfCharts() { return 1; }
+
+    //Main code for creating charts
+    public void createChart(ChartViewer viewer, int chartIndex)
+    {
+        // The data for the chart
+        double[] data = {90, 60, 65, 75, 40};
+
+        // The labels for the chart
+        String[] labels = {"Speed", "Reliability", "Comfort", "Safety", "Efficiency"};
+
+        // Create a PolarChart object of size 450 x 350 pixels
+        PolarChart c = new PolarChart(450, 350);
+
+        // Set center of plot area at (225, 185) with radius 150 pixels
+        c.setPlotArea(225, 185, 150);
+
+        // Add an area layer to the polar chart
+        c.addAreaLayer(data, 0x9999ff);
+
+        // Set the labels to the angular axis as spokes
+        c.angularAxis().setLabels(labels);
+
+        // Output the chart
+        viewer.setChart(c);
+
+        //include tool tip for the chart
+        viewer.setImageMap(c.getHTMLImageMap("clickable", "", "title='{label}: score = {value}'"));
+    }
+
+    //Allow this module to run as standalone program for easy testing
+    public static void main(String[] args)
+    {
+        //Instantiate an instance of this demo module
+        DemoModule demo = new simpleradar();
+
+        //Create and set up the main window
+        JFrame frame = new JFrame(demo.toString());
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {System.exit(0);} });
+        frame.getContentPane().setBackground(Color.white);
+
+        // Create the chart and put them in the content pane
+        ChartViewer viewer = new ChartViewer();
+        demo.createChart(viewer, 0);
+        frame.getContentPane().add(viewer);
+
+        // Display the window
+        frame.pack();
+        frame.setVisible(true);
+    }
+}</pre></td></tr></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<Title>ViewPortListener</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">ViewPortListener</p>
+<hr class="separator">
+<div class="content">
+ViewPortListener is an interface for receiving viewport events, including selection changed event, and viewport changed event.<br><br>
+To handle these events, either implement this interface, or extend the abstract class <a href="ViewPortAdapter.htm">ViewPortAdapter</a> overriding only the methods of interest. <a href="ChartViewer.addViewPortListener.htm">ChartViewer.addViewPortListener</a> can then be used to register the handler object to the ChartViewer.
+<br><br>
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Method</th><th width="19%">Inherited</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td><a href="ViewPortListener.viewPortChanged.htm">viewPortChanged</a></td><td>(Self)</td><td>The system will call this method when the viewport is changed through mouse actions, or when <a href="ChartViewer.updateViewPort.htm">ChartViewer.updateViewPort</a> is called.</td></tr><tr><td><a href="ViewPortListener.selectionChanged.htm">selectionChanged</a></td><td>(Self)</td><td>The system will call this method when the user is selecting a region on the chart using "drag to select" mouse actions.</td>
+</tr>
+</table>
+
+</div>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

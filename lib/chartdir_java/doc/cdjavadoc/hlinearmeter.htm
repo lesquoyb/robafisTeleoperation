@@ -1,0 +1,134 @@
+<HTML>
+<HEAD>
+<Title>Horizontal Linear Meter</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Horizontal Linear Meter</p>
+<hr class="separator">
+<div class="content">
+<img src="images/hlinearmeter.png">
+<br><br>
+This example demonstrates the basic steps in creating a horizontal linear meter.<br><br>
+A horizontal linear meter can be created using the following steps:<br><br>
+<ul><li> Create a <a href="LinearMeter.htm">LinearMeter</a> object using <a href="LinearMeter.LinearMeter.htm">LinearMeter.LinearMeter</a>, optionally specify the background and border colors and whether to use rounded and/or thick frames..<br><br>
+<li> Specify the size of the meter scale and the orientation of the scale labels using <a href="LinearMeter.setMeter.htm">LinearMeter.setMeter</a>. In this example, the scale labels are positioned at the top of the meter scale. This automatically implies the meter as horizontal.<br><br>
+<li> Set the numeric scale of the meter using <a href="BaseMeter.setScale.htm">BaseMeter.setScale</a>.<br><br>
+<li> Optionally add a color scale to the meter using <a href="BaseMeter.addColorScale.htm">BaseMeter.addColorScale</a>. Whereas the meter scale displays the values with text labels, a color scale represents the values with different colors.<br><br>
+<li> Add a pointer to the meter using <a href="BaseMeter.addPointer.htm">BaseMeter.addPointer</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[JSP Version]</b> jspdemo/hlinearmeter.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%
+// The value to display on the meter
+double value = 74.25;
+
+// Create an LinearMeter object of size 250 x 65 pixels with a very light grey (0xeeeeee)
+// background, and a rounded 3-pixel thick light grey (0xcccccc) border
+LinearMeter m = new LinearMeter(250, 65, 0xeeeeee, 0xcccccc);
+m.setRoundedFrame(Chart.Transparent);
+m.setThickFrame(3);
+
+// Set the scale region top-left corner at (14, 23), with size of 218 x 20 pixels. The scale labels
+// are located on the top (implies horizontal meter)
+m.setMeter(14, 23, 218, 20, Chart.Top);
+
+// Set meter scale from 0 - 100, with a tick every 10 units
+m.setScale(0, 100, 10);
+
+// Add a smooth color scale to the meter
+double[] smoothColorScale = {0, 0x6666ff, 25, 0x00bbbb, 50, 0x00ff00, 75, 0xffff00, 100, 0xff0000};
+m.addColorScale(smoothColorScale);
+
+// Add a blue (0x0000cc) pointer at the specified value
+m.addPointer(value, 0x0000cc);
+
+// Output the chart
+String chart1URL = m.makeSession(request, "chart1");
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Horizontal Linear Meter
+&lt;/div&gt;
+&lt;hr color="#000080"&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:1.5em"&gt;
+    &lt;a href="viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;'&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br><b>[Java Version]</b> javademo/hlinearmeter.java
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import ChartDirector.*;
+
+public class hlinearmeter implements DemoModule
+{
+    //Name of demo program
+    public String toString() { return "Horizontal Linear Meter"; }
+
+    //Number of charts produced in this demo
+    public int getNoOfCharts() { return 1; }
+
+    //Main code for creating charts
+    public void createChart(ChartViewer viewer, int chartIndex)
+    {
+        // The value to display on the meter
+        double value = 74.25;
+
+        // Create an LinearMeter object of size 250 x 65 pixels with a very light grey (0xeeeeee)
+        // background, and a rounded 3-pixel thick light grey (0xcccccc) border
+        LinearMeter m = new LinearMeter(250, 65, 0xeeeeee, 0xcccccc);
+        m.setRoundedFrame(Chart.Transparent);
+        m.setThickFrame(3);
+
+        // Set the scale region top-left corner at (14, 23), with size of 218 x 20 pixels. The scale
+        // labels are located on the top (implies horizontal meter)
+        m.setMeter(14, 23, 218, 20, Chart.Top);
+
+        // Set meter scale from 0 - 100, with a tick every 10 units
+        m.setScale(0, 100, 10);
+
+        // Add a smooth color scale to the meter
+        double[] smoothColorScale = {0, 0x6666ff, 25, 0x00bbbb, 50, 0x00ff00, 75, 0xffff00, 100,
+            0xff0000};
+        m.addColorScale(smoothColorScale);
+
+        // Add a blue (0x0000cc) pointer at the specified value
+        m.addPointer(value, 0x0000cc);
+
+        // Output the chart
+        viewer.setChart(m);
+    }
+
+    //Allow this module to run as standalone program for easy testing
+    public static void main(String[] args)
+    {
+        //Instantiate an instance of this demo module
+        DemoModule demo = new hlinearmeter();
+
+        //Create and set up the main window
+        JFrame frame = new JFrame(demo.toString());
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {System.exit(0);} });
+        frame.getContentPane().setBackground(Color.white);
+
+        // Create the chart and put them in the content pane
+        ChartViewer viewer = new ChartViewer();
+        demo.createChart(viewer, 0);
+        frame.getContentPane().add(viewer);
+
+        // Display the window
+        frame.pack();
+        frame.setVisible(true);
+    }
+}</pre></td></tr></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

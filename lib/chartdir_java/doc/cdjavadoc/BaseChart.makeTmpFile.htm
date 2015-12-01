@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.makeTmpFile</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.makeTmpFile</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+public String makeTmpFile(String dirname [, int imageFormat [, int lifeTime ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Generates the chart as an image and save it to a temporary file, and automatically remove old files.<br><br>
+The makeTmpFile method creates the temporary file in the directory specified by <b>dirname</b>. To avoid building up of too many temporary files, it will automatically remove files older than a certain life time (default 600 seconds) in that directory.<br><br>
+Note that makeTmpFile expects <b>dirname</b> be a file system path, not a URL path. For example, the directory "/tmp/tmpcharts" means a directory at the root of the hard disk, not the root of the web document directory. Also, a relative path like "tmpcharts" or "../tmpcharts" is relative to the "current working directory" of the file system, which may not be the same as the "current script directory". It depends on the brand and configuration of the web server. To avoid uncertainties, it is not suggested to use relative paths.<br><br>
+To use a directory that is under the web document directory (so that the browser can load the image), please use the javax.servlet.ServletContext.getRealPath method  to translate the URL path to a full file system path.<br><br>
+Please ensure the temporary file directory exists and is readable and writable by the web server anonymous user. ChartDirector will not create the directory. By default, most systems are configured to deny anonymous user write access to any web server directory. You may need to modify your directory security settings to allow "everyone" to write to the temporary file directory.<br><br>
+If makeTmpFile is unsuccessful, an empty string will be returned. In this case, please check that the temporary directory exists, and is readable and writable by the web server anonymous user. Also, please ensure javax.servlet.ServletContext.getRealPath  has been used to map URL paths to file system paths.<br><br>
+It is highly recommended you use a dedicated directory for storing temporary files created by ChartDirector. This is to avoid makeTmpFile from accidentally removing old files belonging to other applications.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>dirname</td><td>(Mandatory)</td><td>The directory to store the temporary file and to remove old files.</td></tr><tr><td>imageFormat</td><td><a href="Chart.PNG.htm">PNG</a></td><td>A constant representing the format of the image. Must be one of the predefined constants <a href="Chart.PNG.htm">PNG</a>, <a href="Chart.JPG.htm">JPG</a>, <a href="Chart.GIF.htm">GIF</a>, <a href="Chart.BMP.htm">BMP</a>, <a href="Chart.WMP.htm">WMP</a>, <a href="Chart.SVG.htm">SVG</a>, <a href="Chart.SVGZ.htm">SVGZ</a> or <a href="Chart.PDF.htm">PDF</a>.</td></tr><tr><td>lifeTime</td><td>600</td><td>The life time of files in seconds. Older files will be deleted. A negative value disables automatic temporary file removal.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+The temporary file name (not including the path), or an empty string in case of failure.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

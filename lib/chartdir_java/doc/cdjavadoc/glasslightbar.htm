@@ -1,0 +1,184 @@
+<HTML>
+<HEAD>
+<Title>Glass Bar Shading</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Glass Bar Shading</p>
+<hr class="separator">
+<div class="content">
+<img src="images/glasslightbar.png">
+<br><br>
+This example demonstrates using glass shading effect for bars and gradient color for plot area background. It also demonstrates axis labels on both sides of the plot area.<br><br>
+Glass lighting is a complex shading effect that gives a look and feel of tinted glass or semi-transparent plastic material. This effect involves glare and variation of lighting caused by reflection and refraction inside the material.<br><br>
+<ul><li> The gradient plot area background is configured by using <a href="BaseChart.linearGradientColor.htm">BaseChart.linearGradientColor</a> to define the gradient color, then use <a href="XYChart.setPlotArea.htm">XYChart.setPlotArea</a> to apply it to the plot area.<br><br>
+<li> The <a href="XYChart.setPlotArea.htm">XYChart.setPlotArea</a> also sets the plot area border and grid line colors to white.<br><br>
+<li> The glass shading effect of the bars is defined using <a href="Chart.glassEffect.htm">Chart.glassEffect</a>, then applied to the bars using <a href="Layer.setBorderColor.htm">Layer.setBorderColor</a>.<br><br>
+<li> <a href="XYChart.syncYAxis.htm">XYChart.syncYAxis</a> is used to show two synchronized y-axes on both sides of the plot area.<br><br>
+<li> <a href="Axis.setColors.htm">Axis.setColors</a> is used to set the y-axes to <a href="Chart.Transparent.htm">Transparent</a>, so only the axis labels are visible.<br><br>
+<li> The axis label font is set to Arial Bold using <a href="Axis.setLabelStyle.htm">Axis.setLabelStyle</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[JSP Version]</b> jspdemo/glasslightbar.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%
+// The data for the bar chart
+double[] data = {450, 560, 630, 800, 1100, 1350, 1600, 1950, 2300, 2700};
+
+// The labels for the bar chart
+String[] labels = {"1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005"};
+
+// Create a XYChart object of size 600 x 360 pixels
+XYChart c = new XYChart(600, 360);
+
+// Set the plotarea at (60, 40) and of size 480 x 280 pixels. Use a vertical gradient color from
+// light blue (eeeeff) to deep blue (0000cc) as background. Set border and grid lines to white
+// (ffffff).
+c.setPlotArea(60, 40, 480, 280, c.linearGradientColor(60, 40, 60, 280, 0xeeeeff, 0x0000cc), -1,
+    0xffffff, 0xffffff);
+
+// Add a title to the chart using 18pt Times Bold Italic font
+c.addTitle("Annual Revenue for Star Tech", "Times New Roman Bold Italic", 18);
+
+// Add a multi-color bar chart layer using the supplied data. Use glass lighting effect with light
+// direction from the left.
+c.addBarLayer3(data).setBorderColor(Chart.Transparent, Chart.glassEffect(Chart.NormalGlare,
+    Chart.Left));
+
+// Set the x axis labels
+c.xAxis().setLabels(labels);
+
+// Show the same scale on the left and right y-axes
+c.syncYAxis();
+
+// Set the left y-axis and right y-axis title using 10pt Arial Bold font
+c.yAxis().setTitle("USD (millions)", "Arial Bold", 10);
+c.yAxis2().setTitle("USD (millions)", "Arial Bold", 10);
+
+// Set all axes to transparent
+c.xAxis().setColors(Chart.Transparent);
+c.yAxis().setColors(Chart.Transparent);
+c.yAxis2().setColors(Chart.Transparent);
+
+// Set the label styles of all axes to 8pt Arial Bold font
+c.xAxis().setLabelStyle("Arial Bold", 8);
+c.yAxis().setLabelStyle("Arial Bold", 8);
+c.yAxis2().setLabelStyle("Arial Bold", 8);
+
+// Output the chart
+String chart1URL = c.makeSession(request, "chart1");
+
+// Include tool tip for the chart
+String imageMap1 = c.getHTMLImageMap("", "", "title='Year {xLabel}: US$ {value}M'");
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Glass Bar Shading
+&lt;/div&gt;
+&lt;hr color="#000080"&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:1.5em"&gt;
+    &lt;a href="viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;'
+    usemap="#map1" border="0"&gt;
+&lt;map name="map1"&gt;&lt;%=imageMap1%&gt;&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br><b>[Java Version]</b> javademo/glasslightbar.java
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import ChartDirector.*;
+
+public class glasslightbar implements DemoModule
+{
+    //Name of demo program
+    public String toString() { return "Glass Bar Shading"; }
+
+    //Number of charts produced in this demo
+    public int getNoOfCharts() { return 1; }
+
+    //Main code for creating charts
+    public void createChart(ChartViewer viewer, int chartIndex)
+    {
+        // The data for the bar chart
+        double[] data = {450, 560, 630, 800, 1100, 1350, 1600, 1950, 2300, 2700};
+
+        // The labels for the bar chart
+        String[] labels = {"1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004",
+            "2005"};
+
+        // Create a XYChart object of size 600 x 360 pixels
+        XYChart c = new XYChart(600, 360);
+
+        // Set the plotarea at (60, 40) and of size 480 x 280 pixels. Use a vertical gradient color
+        // from light blue (eeeeff) to deep blue (0000cc) as background. Set border and grid lines
+        // to white (ffffff).
+        c.setPlotArea(60, 40, 480, 280, c.linearGradientColor(60, 40, 60, 280, 0xeeeeff, 0x0000cc),
+            -1, 0xffffff, 0xffffff);
+
+        // Add a title to the chart using 18pt Times Bold Italic font
+        c.addTitle("Annual Revenue for Star Tech", "Times New Roman Bold Italic", 18);
+
+        // Add a multi-color bar chart layer using the supplied data. Use glass lighting effect with
+        // light direction from the left.
+        c.addBarLayer3(data).setBorderColor(Chart.Transparent, Chart.glassEffect(Chart.NormalGlare,
+            Chart.Left));
+
+        // Set the x axis labels
+        c.xAxis().setLabels(labels);
+
+        // Show the same scale on the left and right y-axes
+        c.syncYAxis();
+
+        // Set the left y-axis and right y-axis title using 10pt Arial Bold font
+        c.yAxis().setTitle("USD (millions)", "Arial Bold", 10);
+        c.yAxis2().setTitle("USD (millions)", "Arial Bold", 10);
+
+        // Set all axes to transparent
+        c.xAxis().setColors(Chart.Transparent);
+        c.yAxis().setColors(Chart.Transparent);
+        c.yAxis2().setColors(Chart.Transparent);
+
+        // Set the label styles of all axes to 8pt Arial Bold font
+        c.xAxis().setLabelStyle("Arial Bold", 8);
+        c.yAxis().setLabelStyle("Arial Bold", 8);
+        c.yAxis2().setLabelStyle("Arial Bold", 8);
+
+        // Output the chart
+        viewer.setChart(c);
+
+        //include tool tip for the chart
+        viewer.setImageMap(c.getHTMLImageMap("clickable", "", "title='Year {xLabel}: US$ {value}M'")
+            );
+    }
+
+    //Allow this module to run as standalone program for easy testing
+    public static void main(String[] args)
+    {
+        //Instantiate an instance of this demo module
+        DemoModule demo = new glasslightbar();
+
+        //Create and set up the main window
+        JFrame frame = new JFrame(demo.toString());
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {System.exit(0);} });
+        frame.getContentPane().setBackground(Color.white);
+
+        // Create the chart and put them in the content pane
+        ChartViewer viewer = new ChartViewer();
+        demo.createChart(viewer, 0);
+        frame.getContentPane().add(viewer);
+
+        // Display the window
+        frame.pack();
+        frame.setVisible(true);
+    }
+}</pre></td></tr></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

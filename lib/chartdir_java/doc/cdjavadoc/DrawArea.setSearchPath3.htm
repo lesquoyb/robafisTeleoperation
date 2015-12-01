@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<Title>DrawArea.setSearchPath3</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1"><a href="DrawArea.htm">DrawArea</a>.setSearchPath3</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+public void setSearchPath3(ServletContext context[, ServletRequest request[, String path ]])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Search for image files using the ServletContext and ServletRequest.<br><br>
+Please refer to <a href="DrawArea.setSearchPath.htm">DrawArea.setSearchPath</a> for the various methods ChartDirector uses to search for images.<br><br>
+With setSearchPath3, ChartDirector will use the "servlet context" (that is, the path to the web application) as the root of the image path. For example, if the web application is called "myWebApp", and the image path is "/mydir/imagefile.gif", ChartDirector will locate the image assuming it is a resource at:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> http://aaa.bbb.ccc.ddd/myWebApp/mydir/imagefile.gif </div><br>
+If the image path is a relative path, it will be interpreted as relative to the current servlet request path.<br><br>
+The setSearchPath3 accepts an optional argument for specifying a search path for the image. Multiple directories are supported by separating them with semicolons.<br><br>
+For example, a common practice for many web applications is to put all images files in an "/images" subdirectory. In these cases, you can set the search path to "/images".
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>context</td><td>(Mandatory)</td><td>The ServletContext used to resolve absolute paths. This object is usually obtained by using "getServletConfig().getServletContext()" in the Servlet.</td></tr><tr><td>request</td><td>null</td><td>The ServletRequest used to resolve relative paths. In JSP, this is the predefined variable "request". In a servlet, this object is available as the parameter passed in from the doGet or doPost method. null means all paths (relative or absolute) will be resolved using the ServletContext.</td></tr><tr><td>path</td><td>null</td><td>The search path to use. Multiple directories are supported by separating them with semicolons.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

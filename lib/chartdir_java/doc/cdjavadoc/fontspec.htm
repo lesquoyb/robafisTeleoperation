@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+<Title>Font Specification</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Font Specification</p>
+<hr class="separator">
+<p class="heading2a">Font Name</p><div class="content">
+In ChartDirector for Java, a font can be specified using the format:<br><br>
+<div style="margin-left:25;font-family:courier new,courier">
+<pre>{font name} [Bold] [Italic]</pre> </div><br>
+where "{font name}" is a Java compatible font name (that is, the font name that is used in java.awt.Font). The "[Bold]" and "[Italic]" are optional. The followings are some examples:<br><br>
+<div style="margin-left:25;font-family:courier new,courier">
+<pre>Arial Bold
+Times New Roman
+Courier Bold Italic
+SansSerif</pre> </div><br>
+When using the above format, you may use all fonts that are known to the Java system. You can use the Java API GraphicsEnvironment.getAvailableFontFamilyNames to determine the fonts known to the Java system.<br><br>
+ChartDirector also supports using true-type fonts that are unknown to the Java system, which is useful if you would like to use private fonts in your application. This is by specifying the font using the font filename. ChartDirector will try to load the font file from the Java class path as well as from the file system. For example, if you are using ChartDirector in a JSP web application, you can put the fonts files in the WEB-INF/classes inside your web application directory. You can also include the font files in a JAR file as include the JAR file in your Java applications.<br><br>
+<div style="background-color:#cccccc;width:99%;padding:10px">
+<b><u>Special Note for Headless Systems</u></b><br><br>
+Using Java fonts or private font files requires a working the Java font system.<br><br>
+Java running on systems with a GUI should have working font systems. However, some server side Java systems may be "headless", which are systems without GUI. In these cases, Java should be started in headless mode, such as by using the command line flag "-Djava.awt.headless=true". Otherwise, any attempt to use the Java font system may cause error. Please refer to the Java documentation for more details on "headless" mode.<br><br>
+If the Java font system is not working (eg. running on "headless" system but the headless mode is not enabled for Java), as a last resort, ChartDirector will switch to an internal backup font system, so the charts will still work. The internal font system only have 3 fonts - generic sans serif (Arial like font), generic serif (Times New Roman like font) and generic monospace (Courier like font). All of them have bold, italic and bold-italic styles.
+</div><br>
+</div><p class="heading2">Font List</p><div class="content">
+Instead of specifying a single font file as the font name, you may specify a list of font files as the font name, separated by semi-colons. This is useful when using international characters that are only available in some fonts.<br><br>
+For example, if you would like to use the Arial font for western characters, and the MingLiu font  for Chinese characters (since the Arial font does not have Chinese characters), you may specify the font name as "Arial;MingLiu". In this case, ChartDirector will try the Arial font first. If it cannot find a certain character there, it will try the MingLiu font.
+</div><p class="heading2">Indirect Font Names</p><div class="content">
+ChartDirector supports several special keywords for specifying the font name indirectly. When these keywords are used as font names, ChartDirector will look up the actual font names from a font table. The keywords are as follows:<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="19%">Keywords<th width="79%">Description <tr><td>"normal"<td>This default normal font, which is the first font in the font table. This is initially mapped to "Arial".
+<tr><td>"bold"<td>The default bold font, which is the second font in the font table. This is initially mapped to "Arial Bold".
+<tr><td>"italic"<td>The default italic font, which is the third font in the font table. This is initially mapped to "Arial Italic".
+<tr><td>"boldItalic"<td>The default bold-italic font, which is the fourth font in the font table. This is initially mapped to "Arial Bold Italic" .
+<tr><td>"font<i>N</i>"<td>The (N + 1)th font in the font table (the first font is "font0").
+</table><br>
+The font table can be modified using <a href="BaseChart.setFontTable.htm">BaseChart.setFontTable</a> or <a href="DrawArea.setFontTable.htm">DrawArea.setFontTable</a>.<br><br>
+The advantage of using indirect font names is that you can change the fonts fonts in your charts in one place.
+</div><p class="heading2">Font Index</p><div class="content">
+The font index is ignored in ChartDirector for Java. It is solely for compatibility with other ChartDirector editions.
+</div><p class="heading2">Font Size</p><div class="content">
+The font size decides how big a font will appear in the image. The font size is expressed in a font unit called points. This is the same unit used in common word processors.<br><br>
+Instead of specifying font size, some ChartDirector API (eg. <a href="TextBox.setFontSize.htm">TextBox.setFontSize</a>) allow you to specify font height and font width separately. In ChartDirector for Java, only font height is used as the font size, and font width is ignored.
+</div><p class="heading2">Font Color</p><div class="content">
+This is the color to draw the font. (See <a href="colorspec.htm">Color Specification</a> on how colors are represented in ChartDirector.)
+</div><p class="heading2">Font Angle</p><div class="content">
+This is the angle in degrees by which the font should be rotated anti-clockwise.
+</div><p class="heading2">Vertical Layout</p><div class="content">
+By default, text are laid out horizontally, with characters being drawn from left to right.<br><br>
+ChartDirector also supports vertical layout, with characters being drawn from top to bottom. For example, you may use <a href="BaseChart.addText.htm">BaseChart.addText</a> to add text that are laid out vertically. Vertical layout is common for oriental languages such as Chinese, Japanese and Korean.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

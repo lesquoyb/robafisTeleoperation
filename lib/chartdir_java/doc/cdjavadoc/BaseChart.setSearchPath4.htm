@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.setSearchPath4</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.setSearchPath4</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+public void setSearchPath4(URL path)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Search for image files using a URL as the base path.<br><br>
+Please refer to <a href="BaseChart.setSearchPath.htm">BaseChart.setSearchPath</a> for the various methods ChartDirector uses to search for images.<br><br>
+With setSearchPath4, ChartDirector will use the given URL as the base path to load images. This is commonly used in applet applications, in which the applet is running in client machines, but the images are located on server machines.<br><br>
+For example, the following code uses the document base of the applet as the base path for loading images.<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> c.setSearchPath(getDocumentBase()); </div><br>
+Note that in using setSearchPath4, the image path is assumed to be a URL, and the base path is used to resolve the parts of the URL not specified in the image path. This is similar to the paths used in &lt;IMG&gt; tags in web pages.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>path</td><td>(Mandatory)</td><td>An URL acting as the base path for loading images.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

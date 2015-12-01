@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.setSearchPath2</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.setSearchPath2</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+public void setSearchPath2(ClassLoader loader[, String path])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the ClassLoader for loading images.<br><br>
+Please refer to <a href="BaseChart.setSearchPath.htm">BaseChart.setSearchPath</a> for the various methods ChartDirector uses to search for images.<br><br>
+By default, ChartDirector will use a ClassLoader (java.lang.ClassLoader) to search for image files. A ClassLoader will search its class path, using the same method for locating a Java class. A ClassLoader can load the images even if they are inside a JAR file.<br><br>
+In some systems, there are multiple ClassLoaders with different class paths. An example is a JSP web server with multiple servlet contexts. The setSearchPath2 method allows you to specify the ClassLoader to use for loading the images. If you do not specify the ClassLoader to use, ChartDirector will use the ClassLoader that loads ChartDirector itself.<br><br>
+Note that a ClassLoader loads images as Java resources. The image path will be handled as a Java resource path, that is, the path needs to be delimited by "/", and there must be no leading "/".<br><br>
+The setSearchPath2 accepts an optional argument for specifying a search path for searching the image under the class path. Multiple directories are supported by separating them with semicolons.<br><br>
+To disable searching using the ClassLoader, set the ClassLoader to null.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>loader</td><td>(Mandatory)</td><td>The ClassLoader used to load the resource.</td></tr><tr><td>path</td><td>null</td><td>The package path(s) to prepend to the image path. Multiple directories are supported by separating them with semicolons.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

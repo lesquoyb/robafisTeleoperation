@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>ChartViewer.getValueAtViewPort</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1"><a href="ChartViewer.htm">ChartViewer</a>.getValueAtViewPort</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+public double getValueAtViewPort(String id, double vpCoor [, boolean isLogScale ])
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Converts a viewport coordinate to a value of the specified data scale.<br><br>
+Please refer to <a href="ChartViewer.setFullRange.htm">ChartViewer.setFullRange</a> on how to define a data scale.<br><br>
+This method always returns a numeric value. If the axis scale is a date/time scale, and you are expecting a java.util.Date data type, please use <a href="Chart.NTime.htm">Chart.NTime</a> to convert the number to the java.util.Date data type.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>id</td><td>(Mandatory)</td><td>The name of the data scale.</td></tr><tr><td>vpCoor</td><td>(Mandatory)</td><td>The viewport coordinate.</td></tr><tr><td>isLogScale</td><td>false</td><td>true if the conversion is based on a logarithmic scale. false if the conversion is based on a non-logarithmic scale.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+The value of the specified data scale at the viewport coordinate.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

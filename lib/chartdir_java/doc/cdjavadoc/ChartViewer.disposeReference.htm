@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<Title>ChartViewer.disposeReference</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1"><a href="ChartViewer.htm">ChartViewer</a>.disposeReference</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+public void disposeReference()
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Remove the stored reference to the <a href="BaseChart.htm">BaseChart</a> object and image map string set using <a href="ChartViewer.setChart.htm">ChartViewer.setChart</a> and <a href="ChartViewer.setImageMap.htm">ChartViewer.setImageMap</a>.<br><br>
+After calling this method, subsequent calls to <a href="ChartViewer.getChart.htm">ChartViewer.getChart</a> and <a href="ChartViewer.getImageMap.htm">ChartViewer.getImageMap</a> will return null until another BaseChart or image map is set into the ChartViewer.<br><br>
+This method has no visible effect other than removing the stored references, allowing the BaseChart object and image map string to be garbage collected while the chart is still being displayed. This may be useful in systems with very limited memory (such as embedded systems).
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">None</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

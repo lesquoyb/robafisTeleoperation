@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<Title>Installation</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Installation</p>
+<hr class="separator">
+<div class="content">ChartDirector for JSP/Java contains the ChartDirector Java library, complete documentation, and sample code as JSP and as standalone Java programs.<br><br>
+ChartDirector for JSP/Java is distributed as a zip file, with a directory structure compatible with that of a JSP Web Application Archive (WAR). This allows ChartDirector for JSP/Java to be directly installed to a JSP web server as a web application.
+</div><p class="heading1a">Installing ChartDirector as a JSP Web Application</p><div class="content">
+If you are planning to use ChartDirector in a JSP web server, you may consider to install ChartDirector as a JSP web application. To do this, simply rename the ".zip" file extension to ".war" and use it as a WAR. Virtually all JSP web servers support installing WAR. Please refer to your web server's documentation for details.<br><br>
+The advantages of installing ChartDirector as a web application are that the system will be set up automatically for running the sample code and testing ChartDirector. You can also easily uninstall ChartDirector by uninstalling the web application.<br><br>
+After installing ChartDirector as a JSP web application, you can access the ChartDirector documentation and sample code using:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> http://server_name/context_path </div><br>
+where "context_path" is the path of the servlet context that you use during installation.<br><br>
+Most web servers will automatically extract (or unzip) the WAR file during installation. However, some web servers, such as Tomcat configured with unpackWARs="false", may use the WAR file directly without extracting it. In this case, ChartDirector will work normally, but you will be unable to modify the sample code and experiment with ChartDirector.<br><br>
+If your web server does not automatically extract WAR files, you may unzip the WAR file to a directory first, and install the extracted directory to the web server. You may then modify the sample code and experiment with ChartDirector.
+</div><p class="heading1a">Installing ChartDirector in a JSP Web Server Manually</p><div class="content">
+If you do not want to automatically install ChartDirector using WAR, you can manually install the ChartDirector sample code by copying the necessary files.<br><br>
+<ul> <li>Extract the ChartDirector for JSP/Java distribution into an empty directory.<br><br>
+<li>Copy "WEB-INF/lib/ChartDirector.jar" to the "WEB-INF/lib" subdirectory of your web application.<br><br>
+<li>Copy the entire sample code directory "jspdemo" to your web application. </ul>
+For some JSP web servers, you may need to restart the web application after modifying the "WEB-INF/lib" subdirectory.<br><br>
+You may then access the sample code using:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> http://server_name/context_path/jspdemo/index.htm </div><br>
+</div><p class="heading1a">Using ChartDirector in Your Own Web Application</p><div class="content">
+To use ChartDirector in your own web application, you need to:<br><br>
+<ul> <li><b>Copy the ChartDirector Java library to your web application.</b><br><br>
+The ChartDirector Java library is in "WEB-INF/lib/ChartDirector.jar". Please copy it to the "WEB-INF/lib" subdirectory of your web application.<br><br>
+<li><b>(Optional) Map URL of the format "*.chart" to the ChartDirector.GetSessionImage servlet.</b><br><br>
+This step is needed if you are writing servlet applications that do not use JSP. If you are using JSP, this step is usually not needed.<br><br>
+To set up the servlet mapping, please enter the following lines in the "web.xml" file of your web application.<br><br>
+<div style="background-color:#cccccc;width:99%;padding:5px"><pre>&lt;servlet&gt;
+ &lt;servlet-name&gt;GetSessionImage&lt;/servlet-name&gt;
+ &lt;servlet-class&gt;ChartDirector.GetSessionImage&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+
+&lt;servlet-mapping&gt;
+ &lt;servlet-name&gt;GetSessionImage&lt;/servlet-name&gt;
+ &lt;url-pattern&gt;*.chart&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre></div><br>
+If you are using a front-end web server to forward servlet requests to a back-end servlet container (eg. using an Apache web server to forward servlet requests to a Tomcat servlet container), please set up your web server so that it forwards "*.chart" to the servlet container, otherwise the servlet container will not see the "*.chart" requests.<br><br>
+</ul>
+</div><p class="heading1a">Installing ChartDirector for Standalone Applications</p><div class="content">
+If you are planning to use ChartDirector for standalone Java programs, simply extract the ChartDirector for JSP/Java distribution to an empty directory. You can then compile and run the standalone sample programs in the "javademo" subdirectory:<br><br>
+<div style="margin-left:25;"> <b>[Microsoft Windows Command Shell Syntax]</b><br>
+<pre>javac -classpath "ChartDirector_s.jar;." ChartDirectorDemo.java
+java -classpath "ChartDirector_s.jar;." ChartDirectorDemo</pre><br>
+<b>[Typical Linux/UNIX Command Shell Syntax]</b><br>
+<pre>javac -classpath ChartDirector_s.jar:. ChartDirectorDemo.java
+java -classpath ChartDirector_s.jar:. ChartDirectorDemo</pre> </div><br>
+In the above, "ChartDirector_s.jar" is a light-weight version of the full "ChartDirector.jar" library. The light-weight version is for systems that support Java GUI. The full version is for systems that may not have GUI support (eg. some Linux/UNIX servers).
+</div><p class="heading1a">Using ChartDirector in Your Own Standalone Application</p><div class="content">
+To use ChartDirector in your own application, you need to include the ChartDirector Java library in your application by including the ChartDirector library in your class path or Java project.<br><br>
+For Java GUI applications, you may use the light-weight version of the "ChartDirector_s.jar" located in the "javademo" subdirectory.<br><br>
+If you are writing a Java program that may run on a "headless" system (that is, a computer without a GUI, such as some Linux/UNIX serves), but the Java VM is not started with headless mode support, you can use the full version "ChartDirector.jar" located in the "WEB-INF/lib" subdirectory. The full "ChartDirector.jar" contains an internal font system acting as a backup to the Java font system. You may refer to <a href="fontspec.htm">Font Specification</a> for more details.
+</div><p class="heading1a">Javadoc for IDE Integration</p><div class="content">
+Currently, ChartDirector documentation is not in Javadoc format. Instead, it is in both CHM and HTML formats, with the HTML format being similar to the CHM format. The CHM format is preferred because it has integrated search facility, better indexing features, supports bookmarks, and is easier to print.<br><br>
+If you are currently reading the ChartDirector documentation in HTML format, and you are using a Microsoft Windows computer, you are recommended to download the CHM documentation from <a href="http://www.advsofteng.com/download.html" target="_top">http://www.advsofteng.com/download.html</a>.<br><br>
+Some integrated development environments (IDE) can import "Javadoc" and use it to provide "intellisense" tool tips in the source code editor. To support these features, ChartDirector includes "Javadoc" in the "ide_javadoc" subdirectory. Note that the "Javadoc" does not contain any text for human reading. It just contains the ChartDirector API prototypes to allow the IDE to pop up prototypes with proper parameter names in "intellisense". For human reading, please use the CHM (recommended) or standard HTML documentation.
+</div><p class="heading1a">Installing the ChartDirector License</p><div class="content">
+If you have purchased a license to use ChartDirector, you should have a license key delivered to your via email and postal mail.<br><br>
+If your license key is for upgrading from a previous version of ChartDirector, you need to append the upgrade license key to the previous version license key, and use the combined license key.<br><br>
+There are two alternative methods to install the license key.<br><br>
+<ul>
+<li>Create a one-line ASCII file using Notepad or other text editor, and put the license key in that line. The whole file should contain only the license key. Name that file "chartdir.lic" and put the file in the Java class path visible to "ChartDirector.jar" (eg. "WEB-INF/classes" in a web application, or the class path of the main class in a standalone application).<br><br>
+If the license file appears to have no effect (does not disable the yellow banner line), and you are running on a web server environment, please make sure the web server "anonymous user" has read access to the "chartdir.lic" file. You may copy the file "[ChartDirector]/jspdemo/cdinfo.jsp" to your web server and access it using a browser. It will display a diagnostic page explaining why the license cannot be loaded.<br><br>
+<div style="background-color:#cccccc;width:99%;padding:10px">
+Make sure your license file is called "chartdir.lic". In particular, Notepad may automatically append ".txt" to the file name when creating a new file. So even if the file is saved as "chartdir.lic", it may end up as "chartdir.lic.txt". If this is the case, please rename the file back to "chartdir.lic".
+</div><br>
+<li>An alternative method is to hard code the license key into the source code by using the <a href="Chart.setLicenseCode.htm">Chart.setLicenseCode</a> API. This method is recommended if your are redistributing ChartDirector, because your customer will then be unable to see the license key (unless your software is open source).<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> Chart.setLicenseCode(".....your-license-key....."); </div><br>
+</ul></div><br>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

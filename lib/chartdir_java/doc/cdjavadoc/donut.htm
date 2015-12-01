@@ -1,0 +1,216 @@
+<HTML>
+<HEAD>
+<Title>Donut Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Donut Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/donut.jpg">
+<br><br>
+This example demonstrates a donut chart with ring shading effects. It also demonstrates brushed metal background, rounded frame, customized sector labels and using <a href="cdml.htm">CDML</a> and <a href="paramsub.htm">Parameter Substitution and Formatting</a> to format legend text.<br><br>
+<ul><li> A donut chart is the same as a pie chart, except that the <a href="PieChart.setDonutSize.htm">PieChart.setDonutSize</a> is used instead of <a href="PieChart.setPieSize.htm">PieChart.setPieSize</a>.<br><br>
+<li> The brushed silver background is achieved by using <a href="Chart.brushedSilverColor.htm">Chart.brushedSilverColor</a> to create the brushed silver color, then use it in <a href="PieChart.PieChart.htm">PieChart.PieChart</a> as the chart background color.<br><br>
+<li> The rounded frame is configured using <a href="BaseChart.setRoundedFrame.htm">BaseChart.setRoundedFrame</a>.<br><br>
+<li> The sector labels are configured using <a href="PieChart.setLabelFormat.htm">PieChart.setLabelFormat</a> to show the sector number. <a href="PieChart.setLabelStyle.htm">PieChart.setLabelStyle</a> is used to set the label style. It returns a <a href="TextBox.htm">TextBox</a> object representing the sector label prototype. The <a href="Box.setBackground.htm">Box.setBackground</a> method of the label prototype is then used to add black borders around the labels.<br><br>
+<li> The legend text is configured by calling the <a href="TextBox.setText.htm">TextBox.setText</a> method of the <a href="LegendBox.htm">LegendBox</a> object. The legend text template is specified using <a href="cdml.htm">CDML</a> and <a href="paramsub.htm">Parameter Substitution and Formatting</a> as follows:<br><br>
+<div style="margin-left:25;font-family:courier new,courier"> &lt;*block,valign=top*&gt;{={sector}+1}.&lt;*advanceTo=22*&gt;&lt;*block,width=120*&gt;{label}&lt;*/*&gt;&lt;*block,width=40,halign=right*&gt;{percent}&lt;*/*&gt;% </div><br>
+The starting "&lt;*block,valign=top*&gt;" means the different parts in the legend entry should be aligned to the top. This is necessarily because the second part of the legend entry (described below) can have multiple lines.<br><br>
+The first part of the legend entry is "{={sector}+1}.&lt;*advanceTo=22*&gt;", which means the show the sector number, then "tab" to the 22th pixel position. (In ChartDirector, the sector number starts from 0. So we add 1 to {sector} to make the displayed sector number to start from 1.)<br><br>
+The second part "&lt;*block,width=120*&gt;{label}&lt;*/*&gt;" which means to show the sector label in a 120 pixels block. If the label is wider than 120 pixels, it will be wrapped into multiple lines within the block.<br><br>
+The last part "&lt;*block,width=40,halign=right*&gt;{percent}&lt;*/*&gt;%" means to show the percentage in a 40 pixels block, with the contents right aligned.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[JSP Version]</b> jspdemo/donut.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%
+// The data for the pie chart
+double[] data = {25, 18, 15, 12, 8, 30, 35};
+
+// The labels for the pie chart
+String[] labels = {"Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities", "Production"};
+
+// Create a PieChart object of size 600 x 320 pixels. Set background color to brushed silver, with a
+// 2 pixel 3D border. Use rounded corners of 20 pixels radius.
+PieChart c = new PieChart(600, 320, Chart.brushedSilverColor(), Chart.Transparent, 2);
+c.setRoundedFrame(0xffffff, 20);
+
+// Add a title using 18pt Times New Roman Bold Italic font. #Set top/bottom margins to 8 pixels.
+TextBox title = c.addTitle("Donut Chart Demonstration", "Times New Roman Bold Italic", 18);
+title.setMargin2(0, 0, 8, 8);
+
+// Add a 2 pixels wide separator line just under the title
+c.addLine(10, title.getHeight(), c.getWidth() - 11, title.getHeight(), Chart.LineColor, 2);
+
+// Set donut center at (160, 175), and outer/inner radii as 110/55 pixels
+c.setDonutSize(160, 175, 110, 55);
+
+// Set the pie data and the pie labels
+c.setData(data, labels);
+
+// Use ring shading effect for the sectors
+c.setSectorStyle(Chart.RingShading);
+
+// Use the side label layout method, with the labels positioned 16 pixels from the donut bounding
+// box
+c.setLabelLayout(Chart.SideLayout, 16);
+
+// Show only the sector number as the sector label
+c.setLabelFormat("{={sector}+1}");
+
+// Set the sector label style to Arial Bold 10pt, with a dark grey (444444) border
+c.setLabelStyle("Arial Bold", 10).setBackground(Chart.Transparent, 0x444444);
+
+// Add a legend box, with the center of the left side anchored at (330, 175), and using 10pt Arial
+// Bold Italic font
+LegendBox b = c.addLegend(330, 175, true, "Arial Bold Italic", 10);
+b.setAlignment(Chart.Left);
+
+// Set the legend box border to dark grey (444444), and with rounded conerns
+b.setBackground(Chart.Transparent, 0x444444);
+b.setRoundedCorners();
+
+// Set the legend box margin to 16 pixels, and the extra line spacing between the legend entries as
+// 5 pixels
+b.setMargin(16);
+b.setKeySpacing(0, 5);
+
+// Set the legend text to show the sector number, followed by a 120 pixels wide block showing the
+// sector label, and a 40 pixels wide block showing the percentage
+b.setText(
+    "&lt;*block,valign=top*&gt;{={sector}+1}.&lt;*advanceTo=22*&gt;&lt;*block,width=120*&gt;{label}&lt;*/*&gt;" +
+    "&lt;*block,width=40,halign=right*&gt;{percent}&lt;*/*&gt;%");
+
+// Output the chart
+String chart1URL = c.makeSession(request, "chart1", Chart.JPG);
+
+// Include tool tip for the chart
+String imageMap1 = c.getHTMLImageMap("", "", "title='{label}: US${value}K ({percent}%)'");
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Donut Chart
+&lt;/div&gt;
+&lt;hr color="#000080"&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:1.5em"&gt;
+    &lt;a href="viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;'
+    usemap="#map1" border="0"&gt;
+&lt;map name="map1"&gt;&lt;%=imageMap1%&gt;&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br><b>[Java Version]</b> javademo/donut.java
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import ChartDirector.*;
+
+public class donut implements DemoModule
+{
+    //Name of demo program
+    public String toString() { return "Donut Chart"; }
+
+    //Number of charts produced in this demo
+    public int getNoOfCharts() { return 1; }
+
+    //Main code for creating charts
+    public void createChart(ChartViewer viewer, int chartIndex)
+    {
+        // The data for the pie chart
+        double[] data = {25, 18, 15, 12, 8, 30, 35};
+
+        // The labels for the pie chart
+        String[] labels = {"Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities",
+            "Production"};
+
+        // Create a PieChart object of size 600 x 320 pixels. Set background color to brushed
+        // silver, with a 2 pixel 3D border. Use rounded corners of 20 pixels radius.
+        PieChart c = new PieChart(600, 320, Chart.brushedSilverColor(), Chart.Transparent, 2);
+        c.setRoundedFrame(0xffffff, 20);
+
+        // Add a title using 18pt Times New Roman Bold Italic font. #Set top/bottom margins to 8
+        // pixels.
+        TextBox title = c.addTitle("Donut Chart Demonstration", "Times New Roman Bold Italic", 18);
+        title.setMargin2(0, 0, 8, 8);
+
+        // Add a 2 pixels wide separator line just under the title
+        c.addLine(10, title.getHeight(), c.getWidth() - 11, title.getHeight(), Chart.LineColor, 2);
+
+        // Set donut center at (160, 175), and outer/inner radii as 110/55 pixels
+        c.setDonutSize(160, 175, 110, 55);
+
+        // Set the pie data and the pie labels
+        c.setData(data, labels);
+
+        // Use ring shading effect for the sectors
+        c.setSectorStyle(Chart.RingShading);
+
+        // Use the side label layout method, with the labels positioned 16 pixels from the donut
+        // bounding box
+        c.setLabelLayout(Chart.SideLayout, 16);
+
+        // Show only the sector number as the sector label
+        c.setLabelFormat("{={sector}+1}");
+
+        // Set the sector label style to Arial Bold 10pt, with a dark grey (444444) border
+        c.setLabelStyle("Arial Bold", 10).setBackground(Chart.Transparent, 0x444444);
+
+        // Add a legend box, with the center of the left side anchored at (330, 175), and using 10pt
+        // Arial Bold Italic font
+        LegendBox b = c.addLegend(330, 175, true, "Arial Bold Italic", 10);
+        b.setAlignment(Chart.Left);
+
+        // Set the legend box border to dark grey (444444), and with rounded conerns
+        b.setBackground(Chart.Transparent, 0x444444);
+        b.setRoundedCorners();
+
+        // Set the legend box margin to 16 pixels, and the extra line spacing between the legend
+        // entries as 5 pixels
+        b.setMargin(16);
+        b.setKeySpacing(0, 5);
+
+        // Set the legend text to show the sector number, followed by a 120 pixels wide block
+        // showing the sector label, and a 40 pixels wide block showing the percentage
+        b.setText(
+            "&lt;*block,valign=top*&gt;{={sector}+1}.&lt;*advanceTo=22*&gt;&lt;*block,width=120*&gt;{label}&lt;*/*&gt;" +
+            "&lt;*block,width=40,halign=right*&gt;{percent}&lt;*/*&gt;%");
+
+        // Output the chart
+        viewer.setChart(c);
+
+        //include tool tip for the chart
+        viewer.setImageMap(c.getHTMLImageMap("clickable", "",
+            "title='{label}: US${value}K ({percent}%)'"));
+    }
+
+    //Allow this module to run as standalone program for easy testing
+    public static void main(String[] args)
+    {
+        //Instantiate an instance of this demo module
+        DemoModule demo = new donut();
+
+        //Create and set up the main window
+        JFrame frame = new JFrame(demo.toString());
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {System.exit(0);} });
+        frame.getContentPane().setBackground(Color.white);
+
+        // Create the chart and put them in the content pane
+        ChartViewer viewer = new ChartViewer();
+        demo.createChart(viewer, 0);
+        frame.getContentPane().add(viewer);
+
+        // Display the window
+        frame.pack();
+        frame.setVisible(true);
+    }
+}</pre></td></tr></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

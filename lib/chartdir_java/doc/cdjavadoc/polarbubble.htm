@@ -1,0 +1,216 @@
+<HTML>
+<HEAD>
+<Title>Polar Bubble Chart</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Polar Bubble Chart</p>
+<hr class="separator">
+<div class="content">
+<img src="images/polarbubble.png">
+<br><br>
+This example demonstrates how to create polar bubble charts. It also demonstrates using alternating background colors along the radial direction.<br><br>
+A polar bubble chart can be created as a polar line chart with circles as data symbols. The line width is set to 0, so only the symbols can be seen. The symbol sizes are then controlled using another data series. This will create the effects of a bubble chart.<br><br>
+The detail steps are:<br><br>
+<ul><li> Create a polar line layer using <a href="PolarChart.addLineLayer.htm">PolarChart.addLineLayer</a>.<br><br>
+<li> Enable data symbols for the line using <a href="PolarLayer.setDataSymbol.htm">PolarLayer.setDataSymbol</a> (or <a href="PolarLayer.setDataSymbol2.htm">PolarLayer.setDataSymbol2</a> or <a href="PolarLayer.setDataSymbol3.htm">PolarLayer.setDataSymbol3</a> or <a href="PolarLayer.setDataSymbol4.htm">PolarLayer.setDataSymbol4</a>). ChartDirector supports using arbitrary shapes as bubbles, although traditionally, circles are used.<br><br>
+<li> Disable the line by setting its width to 0 using <a href="PolarLayer.setLineWidth.htm">PolarLayer.setLineWidth</a>.<br><br>
+<li> Control the size of the symbols by a data series using <a href="PolarLayer.setSymbolScale.htm">PolarLayer.setSymbolScale</a>.</ul>
+Note that in this example, the polar plot area uses two alternating background colors along the radial direction. This is by using <a href="PolarChart.setPlotAreaBg.htm">PolarChart.setPlotAreaBg</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[JSP Version]</b> jspdemo/polarbubble.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%
+// The data for the chart
+double[] data0 = {6, 12.5, 18.2, 15};
+double[] angles0 = {45, 96, 169, 258};
+double[] size0 = {41, 105, 12, 20};
+
+double[] data1 = {18, 16, 11, 14};
+double[] angles1 = {30, 210, 240, 310};
+double[] size1 = {30, 45, 12, 90};
+
+// Create a PolarChart object of size 460 x 460 pixels
+PolarChart c = new PolarChart(460, 460);
+
+// Add a title to the chart at the top left corner using 15pt Arial Bold Italic font
+c.addTitle2(Chart.TopLeft, "&lt;*underline=2*&gt;EM Field Strength", "Arial Bold Italic", 15);
+
+// Set center of plot area at (230, 240) with radius 180 pixels
+c.setPlotArea(230, 240, 180);
+
+// Use alternative light grey/dark grey circular background color
+c.setPlotAreaBg(0xdddddd, 0xeeeeee);
+
+// Set the grid style to circular grid
+c.setGridStyle(false);
+
+// Add a legend box at the top right corner of the chart using 9pt Arial Bold font
+c.addLegend(459, 0, true, "Arial Bold", 9).setAlignment(Chart.TopRight);
+
+// Set angular axis as 0 - 360, with a spoke every 30 units
+c.angularAxis().setLinearScale(0, 360, 30);
+
+// Set the radial axis label format
+c.radialAxis().setLabelFormat("{value} km");
+
+// Add a blue (0x9999ff) line layer to the chart using (data0, angle0)
+PolarLineLayer layer0 = c.addLineLayer(data0, 0x9999ff, "Cold Spot");
+layer0.setAngles(angles0);
+
+// Disable the line by setting its width to 0, so only the symbols are visible
+layer0.setLineWidth(0);
+
+// Use a circular data point symbol
+layer0.setDataSymbol(Chart.CircleSymbol, 11);
+
+// Modulate the symbol size by size0 to produce a bubble chart effect
+layer0.setSymbolScale(size0);
+
+// Add a red (0xff9999) line layer to the chart using (data1, angle1)
+PolarLineLayer layer1 = c.addLineLayer(data1, 0xff9999, "Hot Spot");
+layer1.setAngles(angles1);
+
+// Disable the line by setting its width to 0, so only the symbols are visible
+layer1.setLineWidth(0);
+
+// Use a circular data point symbol
+layer1.setDataSymbol(Chart.CircleSymbol, 11);
+
+// Modulate the symbol size by size1 to produce a bubble chart effect
+layer1.setSymbolScale(size1);
+
+// Output the chart
+String chart1URL = c.makeSession(request, "chart1");
+
+// Include tool tip for the chart
+String imageMap1 = c.getHTMLImageMap("", "",
+    "title='{dataSetName} at ({value} km, {angle} deg)\nStrength = {z} Watt'");
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Polar Bubble Chart
+&lt;/div&gt;
+&lt;hr color="#000080"&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:1.5em"&gt;
+    &lt;a href="viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;'
+    usemap="#map1" border="0"&gt;
+&lt;map name="map1"&gt;&lt;%=imageMap1%&gt;&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br><b>[Java Version]</b> javademo/polarbubble.java
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import ChartDirector.*;
+
+public class polarbubble implements DemoModule
+{
+    //Name of demo program
+    public String toString() { return "Polar Bubble Chart"; }
+
+    //Number of charts produced in this demo
+    public int getNoOfCharts() { return 1; }
+
+    //Main code for creating charts
+    public void createChart(ChartViewer viewer, int chartIndex)
+    {
+        // The data for the chart
+        double[] data0 = {6, 12.5, 18.2, 15};
+        double[] angles0 = {45, 96, 169, 258};
+        double[] size0 = {41, 105, 12, 20};
+
+        double[] data1 = {18, 16, 11, 14};
+        double[] angles1 = {30, 210, 240, 310};
+        double[] size1 = {30, 45, 12, 90};
+
+        // Create a PolarChart object of size 460 x 460 pixels
+        PolarChart c = new PolarChart(460, 460);
+
+        // Add a title to the chart at the top left corner using 15pt Arial Bold Italic font
+        c.addTitle2(Chart.TopLeft, "&lt;*underline=2*&gt;EM Field Strength", "Arial Bold Italic", 15);
+
+        // Set center of plot area at (230, 240) with radius 180 pixels
+        c.setPlotArea(230, 240, 180);
+
+        // Use alternative light grey/dark grey circular background color
+        c.setPlotAreaBg(0xdddddd, 0xeeeeee);
+
+        // Set the grid style to circular grid
+        c.setGridStyle(false);
+
+        // Add a legend box at the top right corner of the chart using 9pt Arial Bold font
+        c.addLegend(459, 0, true, "Arial Bold", 9).setAlignment(Chart.TopRight);
+
+        // Set angular axis as 0 - 360, with a spoke every 30 units
+        c.angularAxis().setLinearScale(0, 360, 30);
+
+        // Set the radial axis label format
+        c.radialAxis().setLabelFormat("{value} km");
+
+        // Add a blue (0x9999ff) line layer to the chart using (data0, angle0)
+        PolarLineLayer layer0 = c.addLineLayer(data0, 0x9999ff, "Cold Spot");
+        layer0.setAngles(angles0);
+
+        // Disable the line by setting its width to 0, so only the symbols are visible
+        layer0.setLineWidth(0);
+
+        // Use a circular data point symbol
+        layer0.setDataSymbol(Chart.CircleSymbol, 11);
+
+        // Modulate the symbol size by size0 to produce a bubble chart effect
+        layer0.setSymbolScale(size0);
+
+        // Add a red (0xff9999) line layer to the chart using (data1, angle1)
+        PolarLineLayer layer1 = c.addLineLayer(data1, 0xff9999, "Hot Spot");
+        layer1.setAngles(angles1);
+
+        // Disable the line by setting its width to 0, so only the symbols are visible
+        layer1.setLineWidth(0);
+
+        // Use a circular data point symbol
+        layer1.setDataSymbol(Chart.CircleSymbol, 11);
+
+        // Modulate the symbol size by size1 to produce a bubble chart effect
+        layer1.setSymbolScale(size1);
+
+        // Output the chart
+        viewer.setChart(c);
+
+        //include tool tip for the chart
+        viewer.setImageMap(c.getHTMLImageMap("clickable", "",
+            "title='{dataSetName} at ({value} km, {angle} deg) Strength = {z} Watt'"));
+    }
+
+    //Allow this module to run as standalone program for easy testing
+    public static void main(String[] args)
+    {
+        //Instantiate an instance of this demo module
+        DemoModule demo = new polarbubble();
+
+        //Create and set up the main window
+        JFrame frame = new JFrame(demo.toString());
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {System.exit(0);} });
+        frame.getContentPane().setBackground(Color.white);
+
+        // Create the chart and put them in the content pane
+        ChartViewer viewer = new ChartViewer();
+        demo.createChart(viewer, 0);
+        frame.getContentPane().add(viewer);
+
+        // Display the window
+        frame.pack();
+        frame.setVisible(true);
+    }
+}</pre></td></tr></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

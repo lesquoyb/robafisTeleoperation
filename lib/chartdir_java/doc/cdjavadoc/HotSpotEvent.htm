@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<Title>HotSpotEvent</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">HotSpotEvent</p>
+<hr class="separator">
+<div class="content">
+HotSpotEvent is a subclass of java.awt.event.MouseEvent. It provides information about hot spot events that occurred in a component. This includes both hot spot mouse events (click, enter, exit) and hot spot mouse motion events (moves and drags).<br><br>
+In addition to the information included in a MouseEvent, the HotSpotEvent includes attributes associated with the hot spot. These attributes come from query parameters in the image map that defines the hot spot.<br><br>
+For example, suppose the query parameters for the hot spot is:<br><br>
+<table width="98%" border="0" cellpadding="5" cellspacing="0"><tr> <td bgcolor="#cccccc">x=0&xLabel=Mon&dataSet=0&dataSetName=Revenue&value=100</td> </tr></table><br>
+The HotSpotEvent object will contain the following attributes.<br><br>
+<table width="98%" border="1" cellpadding="5" cellspacing="0"> <tr><th width="150px">Attribute<th width="150px">Value <tr><td>x<td>0 <tr><td>xLabel<td>Mon <tr><td>dataSet<td>0 <tr><td>dataSetName<td>Revenue <tr><td>value<td>100 </table><br>
+If there are two attributes with the same name in the query parameters, they will be merged into one attribute, with the values appended together, delimited using the ASCII unit separator character (ASCII code 31).<br><br>
+In addition to the attributes due to query parameters, the HotSpotEvent object contains three additional attributes as follows:<br><br>
+<ul> <li>The path attribute reflecting the path portion of the URL in the &lt;AREA&gt; tag that defines the hot spot.<br><br>
+<li>The coords attribute reflecting the coords attribute of the &lt;AREA&gt; tag that defines the hot spot.<br><br>
+<li>The title attribute reflecting the title attribute of the &lt;AREA&gt; tag that defines the hot spot. </ul>
+<br><br>
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Method</th><th width="19%">Inherited</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td><a href="HotSpotEvent.get.htm">get</a></td><td>(Self)</td><td>Gets a named attribute associated with the hot spot.</td></tr><tr><td><a href="HotSpotEvent.getAttrValues.htm">getAttrValues</a></td><td>(Self)</td><td>Gets a Hashtable containing the attributes associated with the hot spot.</td></tr><tr><td colspan="3" bgColor="#cccccc">Note: Methods inherited from MouseEvent are omitted.</td></tr>
+</tr>
+</table>
+
+</div>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

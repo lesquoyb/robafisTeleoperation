@@ -1,0 +1,197 @@
+<HTML>
+<HEAD>
+<Title>Surface Chart (3)</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Surface Chart (3)</p>
+<hr class="separator">
+<div class="content">
+<img src="images/surface3.jpg">
+<br><br>
+This example demonstrates using deep perspective. It also demonstrates surface grid lines of different line styles.<br><br>
+<ul><li> The deep perspective in this example is configured using <a href="ThreeDChart.setPerspective.htm">ThreeDChart.setPerspective</a>.<br><br>
+<li> Like all other lines in ChartDirector, "dash line colors" can be applied to surface grid lines to cause them to draw in dash line styles. In this example, <a href="BaseChart.dashLineColor.htm">BaseChart.dashLineColor</a> is used to create a dash line color, which is used as the minor surface grid line color in <a href="SurfaceChart.setSurfaceAxisGrid.htm">SurfaceChart.setSurfaceAxisGrid</a>.</ul>
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[JSP Version]</b> jspdemo/surface3.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%
+// The x and y coordinates of the grid
+double[] dataX = {-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+double[] dataY = {-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+// The values at the grid points. In this example, we will compute the values using the formula z =
+// Sin(x * x / 128 - y * y / 256 + 3) * Cos(x / 4 + 1 - Exp(y / 8))
+double[] dataZ = new double[dataX.length * dataY.length];
+for (int yIndex = 0; yIndex &lt; dataY.length; ++yIndex) {
+    double y = dataY[yIndex];
+    for (int xIndex = 0; xIndex &lt; dataX.length; ++xIndex) {
+        double x = dataX[xIndex];
+        dataZ[yIndex * dataX.length + xIndex] = Math.sin(x * x / 128.0 - y * y / 256.0 + 3) *
+            Math.cos(x / 4.0 + 1 - Math.exp(y / 8.0));
+    }
+}
+
+// Create a SurfaceChart object of size 750 x 600 pixels
+SurfaceChart c = new SurfaceChart(750, 600);
+
+// Add a title to the chart using 20 points Times New Roman Italic font
+c.addTitle("Surface Energy Density       ", "Times New Roman Italic", 20);
+
+// Set the center of the plot region at (380, 260), and set width x depth x height to 360 x 360 x
+// 270 pixels
+c.setPlotRegion(380, 260, 360, 360, 270);
+
+// Set the elevation and rotation angles to 30 and 210 degrees
+c.setViewAngle(30, 210);
+
+// Set the perspective level to 60
+c.setPerspective(60);
+
+// Set the data to use to plot the chart
+c.setData(dataX, dataY, dataZ);
+
+// Spline interpolate data to a 80 x 80 grid for a smooth surface
+c.setInterpolation(80, 80);
+
+// Use semi-transparent black (c0000000) for x and y major surface grid lines. Use dotted style for
+// x and y minor surface grid lines.
+int majorGridColor = 0xc0000000;
+int minorGridColor = c.dashLineColor(majorGridColor, Chart.DotLine);
+c.setSurfaceAxisGrid(majorGridColor, majorGridColor, minorGridColor, minorGridColor);
+
+// Set contour lines to semi-transparent white (80ffffff)
+c.setContourColor(0x80ffffff);
+
+// Add a color axis (the legend) in which the left center is anchored at (665, 280). Set the length
+// to 200 pixels and the labels on the right side.
+c.setColorAxis(665, 280, Chart.Left, 200, Chart.Right);
+
+// Set the x, y and z axis titles using 12 points Arial Bold font
+c.xAxis().setTitle("X Title\nPlaceholder", "Arial Bold", 12);
+c.yAxis().setTitle("Y Title\nPlaceholder", "Arial Bold", 12);
+c.zAxis().setTitle("Z Title Placeholder", "Arial Bold", 12);
+
+// Output the chart
+String chart1URL = c.makeSession(request, "chart1", Chart.JPG);
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    Surface Chart (3)
+&lt;/div&gt;
+&lt;hr color="#000080"&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:1.5em"&gt;
+    &lt;a href="viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart1URL)%&gt;'&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br><b>[Java Version]</b> javademo/surface3.java
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import ChartDirector.*;
+
+public class surface3 implements DemoModule
+{
+    //Name of demo program
+    public String toString() { return "Surface Chart (3)"; }
+
+    //Number of charts produced in this demo
+    public int getNoOfCharts() { return 1; }
+
+    //Main code for creating charts
+    public void createChart(ChartViewer viewer, int chartIndex)
+    {
+        // The x and y coordinates of the grid
+        double[] dataX = {-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+            ;
+        double[] dataY = {-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+            ;
+
+        // The values at the grid points. In this example, we will compute the values using the
+        // formula z = Sin(x * x / 128 - y * y / 256 + 3) * Cos(x / 4 + 1 - Exp(y / 8))
+        double[] dataZ = new double[dataX.length * dataY.length];
+        for (int yIndex = 0; yIndex &lt; dataY.length; ++yIndex) {
+            double y = dataY[yIndex];
+            for (int xIndex = 0; xIndex &lt; dataX.length; ++xIndex) {
+                double x = dataX[xIndex];
+                dataZ[yIndex * dataX.length + xIndex] = Math.sin(x * x / 128.0 - y * y / 256.0 + 3)
+                     * Math.cos(x / 4.0 + 1 - Math.exp(y / 8.0));
+            }
+        }
+
+        // Create a SurfaceChart object of size 750 x 600 pixels
+        SurfaceChart c = new SurfaceChart(750, 600);
+
+        // Add a title to the chart using 20 points Times New Roman Italic font
+        c.addTitle("Surface Energy Density       ", "Times New Roman Italic", 20);
+
+        // Set the center of the plot region at (380, 260), and set width x depth x height to 360 x
+        // 360 x 270 pixels
+        c.setPlotRegion(380, 260, 360, 360, 270);
+
+        // Set the elevation and rotation angles to 30 and 210 degrees
+        c.setViewAngle(30, 210);
+
+        // Set the perspective level to 60
+        c.setPerspective(60);
+
+        // Set the data to use to plot the chart
+        c.setData(dataX, dataY, dataZ);
+
+        // Spline interpolate data to a 80 x 80 grid for a smooth surface
+        c.setInterpolation(80, 80);
+
+        // Use semi-transparent black (c0000000) for x and y major surface grid lines. Use dotted
+        // style for x and y minor surface grid lines.
+        int majorGridColor = 0xc0000000;
+        int minorGridColor = c.dashLineColor(majorGridColor, Chart.DotLine);
+        c.setSurfaceAxisGrid(majorGridColor, majorGridColor, minorGridColor, minorGridColor);
+
+        // Set contour lines to semi-transparent white (80ffffff)
+        c.setContourColor(0x80ffffff);
+
+        // Add a color axis (the legend) in which the left center is anchored at (665, 280). Set the
+        // length to 200 pixels and the labels on the right side.
+        c.setColorAxis(665, 280, Chart.Left, 200, Chart.Right);
+
+        // Set the x, y and z axis titles using 12 points Arial Bold font
+        c.xAxis().setTitle("X Title\nPlaceholder", "Arial Bold", 12);
+        c.yAxis().setTitle("Y Title\nPlaceholder", "Arial Bold", 12);
+        c.zAxis().setTitle("Z Title Placeholder", "Arial Bold", 12);
+
+        // Output the chart
+        viewer.setChart(c);
+    }
+
+    //Allow this module to run as standalone program for easy testing
+    public static void main(String[] args)
+    {
+        //Instantiate an instance of this demo module
+        DemoModule demo = new surface3();
+
+        //Create and set up the main window
+        JFrame frame = new JFrame(demo.toString());
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {System.exit(0);} });
+        frame.getContentPane().setBackground(Color.white);
+
+        // Create the chart and put them in the content pane
+        ChartViewer viewer = new ChartViewer();
+        demo.createChart(viewer, 0);
+        frame.getContentPane().add(viewer);
+
+        // Display the window
+        frame.pack();
+        frame.setVisible(true);
+    }
+}</pre></td></tr></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

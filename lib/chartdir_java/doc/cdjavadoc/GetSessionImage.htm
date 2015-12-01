@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<Title>GetSessionImage</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">GetSessionImage</p>
+<hr class="separator">
+<div class="content">
+ChartDirector.GetSessionImage is a utility servlet that retrieves an image from a session variable, and returns the image to the browser.<br><br>
+GetSessionImage is typically used in the URL of an &lt;IMG&gt; tag, so that the &lt;IMG&gt; tag can reference an image in a session variable.<br><br>
+The name of the session variable is specify as a URL query parameter "img". For example, "getchart.chart?img=chart1" will retrieve an image from the session variable "chart1", assuming URL "*.chart" maps to the GetSessionImage servlet.<br><br>
+For compatibility with previous versions of ChartDirector, GetSessionImage also supports specifying the session variable name as the name of the servlet. For example, "xyz.chart" will retrieve the image from the session variable "xyz". This syntax is now deprecated.<br><br>
+To use GetSessionImage, you need to set up the necessary URL to servlet mappings. Please refer to the <a href="install.htm">Installation</a> section for details.<br><br>
+GetSessionImage is usually used together with <a href="BaseChart.makeSession.htm">BaseChart.makeSession</a>. The latter creates a chart image in a session variable, and returns an URL query string that can be used directly by GetSessionImage.<br><br>
+The GetSessionImage performs the same function as <a href="getchart.jsp.htm">getchart.jsp</a>. It is an alternative to getchart.jsp for servlet applications that do not use JSP.
+
+</div>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

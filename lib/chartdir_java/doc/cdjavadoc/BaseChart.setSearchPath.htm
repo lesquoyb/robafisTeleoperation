@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<Title>BaseChart.setSearchPath</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1"><a href="BaseChart.htm">BaseChart</a>.setSearchPath</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+public void setSearchPath(String path)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Sets the file system search path for loading image files.<br><br>
+Several ChartDirector operations involve loading image files. Examples are wallpapers (<a href="BaseChart.setWallpaper.htm">BaseChart.setWallpaper</a>), background images (<a href="BaseChart.setBgImage.htm">BaseChart.setBgImage</a> and <a href="PlotArea.setBackground2.htm">PlotArea.setBackground2</a>), user-defined symbols (<a href="DataSet.setDataSymbol2.htm">DataSet.setDataSymbol2</a>) or for embedding images in text using <a href="cdml.htm">ChartDirector Mark Up Language</a>.<br><br>
+By default, if a relative path name is used for an image file, ChartDirector will search for the image file using a ClassLoader (see <a href="BaseChart.setSearchPath2.htm">BaseChart.setSearchPath2</a> for details), and also in the "current directory".<br><br>
+The setSearchPath method allows you to specify a search path instead of using the "current directory". Multiple directories are supported by separating them with the path separator (java.io.File.pathSeparator - ";" for Windows and ":" for Linux/UNIX).<br><br>
+If you are using ChartDirector in a web server, you may want to search for the images relative to the current servlet context. Please refer to <a href="BaseChart.setSearchPath3.htm">BaseChart.setSearchPath3</a> for details.<br><br>
+If you are using ChartDirector in an applet environment, you may want to search for the images based on the "code base" or "document base" of the Applet. Please refer to <a href="BaseChart.setSearchPath4.htm">BaseChart.setSearchPath4</a> for details.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>path</td><td>(Mandatory)</td><td>A list of directories, separated with  the path separator (java.io.File.pathSeparator) of your operating system (";" for Windows, ":" for Linux/UNIX).</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+None
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

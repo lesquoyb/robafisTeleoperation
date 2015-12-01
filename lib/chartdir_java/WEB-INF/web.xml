@@ -1,0 +1,25 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" 
+"http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+
+<display-name>ChartDirector for JSP/Java 6.0</display-name>
+
+<!-- GetSessionImage is the chart image delivery servlet used by ChartDirector -->
+<servlet>
+	<servlet-name>GetSessionImage</servlet-name>
+	<servlet-class>ChartDirector.GetSessionImage</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>GetSessionImage</servlet-name>
+	<url-pattern>*.chart</url-pattern>
+</servlet-mapping>
+
+<session-config>
+	<session-timeout>5</session-timeout>
+</session-config>
+
+<welcome-file-list>
+	<welcome-file>index.htm</welcome-file>
+</welcome-file-list>
+ 
+</web-app>

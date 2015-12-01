@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+<Title>HotSpotListener</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">HotSpotListener</p>
+<hr class="separator">
+<div class="content">
+HotSpotListener is an interface for receiving hot spot mouse events (press, release, click, enter, and exit). It is similar to java.awt.event.MouseListener, except that it applies to mouse events that occur over hot spots.<br><br>
+(To track hot spot mouse moves and drags, use the <a href="HotSpotMotionListener.htm">HotSpotMotionListener</a>.)<br><br>
+To handle these events, either implement this interface, or extend the abstract class <a href="HotSpotAdapter.htm">HotSpotAdapter</a> overriding only the methods of interest. <a href="ChartViewer.addHotSpotListener.htm">ChartViewer.addHotSpotListener</a> can then be used to register the handler object to the ChartViewer.
+<br><br>
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Method</th><th width="19%">Inherited</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td><a href="HotSpotListener.hotSpotClicked.htm">hotSpotClicked</a></td><td>(Self)</td><td>The system will call this method when the mouse clicks on a hot spot.</td></tr><tr><td><a href="HotSpotListener.hotSpotEntered.htm">hotSpotEntered</a></td><td>(Self)</td><td>The system will call this method when the mouse enters a hot spot region.</td></tr><tr><td><a href="HotSpotListener.hotSpotExited.htm">hotSpotExited</a></td><td>(Self)</td><td>The system will call this method when the mouse leaves a hot spot region.</td></tr><tr><td><a href="HotSpotListener.hotSpotPressed.htm">hotSpotPressed</a></td><td>(Self)</td><td>The system will call this method when the mouse is over a hot spot region and a mouse button is pressed.</td></tr><tr><td><a href="HotSpotListener.hotSpotReleased.htm">hotSpotReleased</a></td><td>(Self)</td><td>The system will call this method when the mouse is over a hot spot region and a mouse button is released.</td>
+</tr>
+</table>
+
+</div>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

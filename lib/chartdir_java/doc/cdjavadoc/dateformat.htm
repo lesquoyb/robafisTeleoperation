@@ -1,0 +1,18 @@
+<HTML>
+<HEAD>
+<Title>Date/Time Specification</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">Date/Time Specification</p>
+<hr class="separator">
+<div class="content"> 
+Many functions in the ChartDirector API accept dates/times as parameters. ChartDirector represents dates/times as the number of seconds elapsed since 1-1-0001 00:00:00. The dates/times are numbers, so they can readily be used in ChartDirector APIs that expects numbers as arguments.<br><br>
+For example, in XY Charts, both the x values and y values are of "double" data type. You can use numeric values or ChartDirector dates/times as the x and y values, as both of them are numbers.<br><br>
+In Java, there is a class java.util.Date that is commonly used to represents date/time. Several ChartDirector APIs are overloaded to accept java.util.Date in addition to double precision numbers. These overloaded functions are provided to handle common date/time chart usages.<br><br>
+For example, in a typical time based chart, the independent variable (the x values) usually represents date/time, while the dependent variable (the y values) is numeric. So in ChartDirector, many x-values functions (eg. <a href="Layer.setXData.htm">Layer.setXData</a>, <a href="Layer.setXData2.htm">Layer.setXData2</a>) and axis functions (eg. <a href="Axis.setLabels2.htm">Axis.setLabels2</a>, <a href="Axis.setDateScale.htm">Axis.setDateScale</a>) are overloaded to support java.util.Date as arguments.<br><br>
+ChartDirector also supports charts in which both x and y values are dates/times. However, because this type of chart is not common, ChartDirector does not provide overloaded functions to accept y values as java.util.Date. This is to avoid overcrowding the ChartDirector API with all possible combinations of date/time and numeric data types. For these cases, the y dates/times need to be supplied in ChartDirector's native format.<br><br>
+<a href="Chart.chartTime.htm">Chart.chartTime</a> can be used to create a ChartDirector date/time given the year, month, day, hour, minutes and seconds. ChartDirector also provides several functions for converting to and from java.util.Date, including <a href="Chart.CTime.htm">Chart.CTime</a>, <a href="Chart.CTime2.htm">Chart.CTime2</a>, <a href="Chart.NTime.htm">Chart.NTime</a> and <a href="Chart.NTime2.htm">Chart.NTime2</a>.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

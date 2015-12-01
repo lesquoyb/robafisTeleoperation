@@ -1,0 +1,185 @@
+<HTML>
+<HEAD>
+<Title>3D Shadow Mode</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">3D Shadow Mode</p>
+<hr class="separator">
+<div class="content">
+<img src="images/shadowpie0.png">&nbsp;&nbsp;<img src="images/shadowpie1.png">&nbsp;&nbsp;<img src="images/shadowpie2.png">&nbsp;&nbsp;<img src="images/shadowpie3.png">
+<br><br>
+This example demonstrates an alternative 3D drawing method that uses shadows.<br><br>
+The standard way to draw a pie chart in 3D is to view the chart from an inclined angle. Using this method, the surface of a 3D pie will become an ellipse.<br><br>
+ChartDirector supports an alternative way to draw a pie chart in 3D - to draw the 3D portion like a shadow. The 3D pie will remain perfectly circular, and the sector areas will correctly reflect its percentages.<br><br>
+The 3D drawing method is configured using <a href="PieChart.set3D.htm">PieChart.set3D</a>.
+</div>
+<p class="heading1a">Source Code Listing</p>
+<div class="content">
+<b>[JSP Version]</b> jspdemo/shadowpie.jsp
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>&lt;%@page import="ChartDirector.*" %&gt;
+&lt;%@page import="javax.servlet.http.*" %&gt;
+&lt;%!
+// A simple structure to represent a chart image with an image map
+private static class ImageWithHotSpot
+{
+    String imageURL;
+    String imageMap;
+}
+
+// Function to create the demo charts
+ImageWithHotSpot createChart(HttpServletRequest request, int chartIndex)
+{
+    // the tilt angle of the pie
+    int angle = chartIndex * 90 + 45;
+
+    // The data for the pie chart
+    double[] data = {25, 18, 15, 12, 8, 30, 35};
+
+    // The labels for the pie chart
+    String[] labels = {"Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities",
+        "Production"};
+
+    // Create a PieChart object of size 110 x 110 pixels
+    PieChart c = new PieChart(110, 110);
+
+    // Set the center of the pie at (50, 55) and the radius to 36 pixels
+    c.setPieSize(55, 55, 36);
+
+    // Set the depth, tilt angle and 3D mode of the 3D pie (-1 means auto depth, "true" means the 3D
+    // effect is in shadow mode)
+    c.set3D(-1, angle, true);
+
+    // Add a title showing the shadow angle
+    c.addTitle("Shadow @ " + angle + " deg", "Arial", 8);
+
+    // Set the pie data
+    c.setData(data, labels);
+
+    // Disable the sector labels by setting the color to Transparent
+    c.setLabelStyle("", 8, Chart.Transparent);
+
+    // Output the chart
+    ImageWithHotSpot ret = new ImageWithHotSpot();
+    ret.imageURL = c.makeSession(request, "chart" + chartIndex);
+
+    // Include tool tip for the chart
+    ret.imageMap = c.getHTMLImageMap("", "", "title='{label}: US${value}K ({percent}%)'");
+
+    return ret;
+}
+%&gt;
+&lt;%
+ImageWithHotSpot chart0 = createChart(request, 0);
+ImageWithHotSpot chart1 = createChart(request, 1);
+ImageWithHotSpot chart2 = createChart(request, 2);
+ImageWithHotSpot chart3 = createChart(request, 3);
+%&gt;
+&lt;html&gt;
+&lt;body style="margin:5px 0px 0px 5px"&gt;
+&lt;div style="font-size:18pt; font-family:verdana; font-weight:bold"&gt;
+    3D Shadow Mode
+&lt;/div&gt;
+&lt;hr color="#000080"&gt;
+&lt;div style="font-size:10pt; font-family:verdana; margin-bottom:1.5em"&gt;
+    &lt;a href="viewsource.jsp?file=&lt;%=request.getServletPath()%&gt;"&gt;View Source Code&lt;/a&gt;
+&lt;/div&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart0.imageURL)%&gt;'
+    usemap="#map0" border="0"&gt;
+&lt;map name="map0"&gt;&lt;%=chart0.imageMap%&gt;&lt;/map&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart1.imageURL)%&gt;'
+    usemap="#map1" border="0"&gt;
+&lt;map name="map1"&gt;&lt;%=chart1.imageMap%&gt;&lt;/map&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart2.imageURL)%&gt;'
+    usemap="#map2" border="0"&gt;
+&lt;map name="map2"&gt;&lt;%=chart2.imageMap%&gt;&lt;/map&gt;
+&lt;img src='&lt;%=response.encodeURL("getchart.jsp?"+chart3.imageURL)%&gt;'
+    usemap="#map3" border="0"&gt;
+&lt;map name="map3"&gt;&lt;%=chart3.imageMap%&gt;&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table><br><b>[Java Version]</b> javademo/shadowpie.java
+<table width="98%" border="0" cellpadding="10"><tr><td bgcolor="#cccccc"><pre>import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import ChartDirector.*;
+
+public class shadowpie implements DemoModule
+{
+    //Name of demo program
+    public String toString() { return "3D Shadow Mode"; }
+
+    //Number of charts produced in this demo
+    public int getNoOfCharts() { return 4; }
+
+    //Main code for creating charts
+    public void createChart(ChartViewer viewer, int chartIndex)
+    {
+        // the tilt angle of the pie
+        int angle = chartIndex * 90 + 45;
+
+        // The data for the pie chart
+        double[] data = {25, 18, 15, 12, 8, 30, 35};
+
+        // The labels for the pie chart
+        String[] labels = {"Labor", "Licenses", "Taxes", "Legal", "Insurance", "Facilities",
+            "Production"};
+
+        // Create a PieChart object of size 110 x 110 pixels
+        PieChart c = new PieChart(110, 110);
+
+        // Set the center of the pie at (50, 55) and the radius to 36 pixels
+        c.setPieSize(55, 55, 36);
+
+        // Set the depth, tilt angle and 3D mode of the 3D pie (-1 means auto depth, "true" means
+        // the 3D effect is in shadow mode)
+        c.set3D(-1, angle, true);
+
+        // Add a title showing the shadow angle
+        c.addTitle("Shadow @ " + angle + " deg", "Arial", 8);
+
+        // Set the pie data
+        c.setData(data, labels);
+
+        // Disable the sector labels by setting the color to Transparent
+        c.setLabelStyle("", 8, Chart.Transparent);
+
+        // Output the chart
+        viewer.setChart(c);
+
+        //include tool tip for the chart
+        viewer.setImageMap(c.getHTMLImageMap("clickable", "",
+            "title='{label}: US${value}K ({percent}%)'"));
+    }
+
+    //Allow this module to run as standalone program for easy testing
+    public static void main(String[] args)
+    {
+        //Instantiate an instance of this demo module
+        DemoModule demo = new shadowpie();
+
+        //Create and set up the main window
+        JFrame frame = new JFrame(demo.toString());
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {System.exit(0);} });
+        frame.getContentPane().setBackground(Color.white);
+        frame.getContentPane().setLayout(new FlowLayout(FlowLayout.LEFT));
+        frame.setSize(800, 450);
+
+        // Create the charts and put them in the content pane
+        for (int i = 0; i &lt; demo.getNoOfCharts(); ++i)
+        {
+            ChartViewer viewer = new ChartViewer();
+            demo.createChart(viewer, i);
+            frame.getContentPane().add(viewer);
+        }
+
+        // Display the window
+        frame.setVisible(true);
+    }
+}</pre></td></tr></table>
+</div>
+<br><hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

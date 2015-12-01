@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+<Title>HotSpotMotionListener</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">HotSpotMotionListener</p>
+<hr class="separator">
+<div class="content">
+HotSpotMotionListener is an interface for receiving hot spot mouse motion events (moves and drags). It is similar to java.awt.event.MouseMotionListener, except that it applies to mouse motion events that occur over hot spots.<br><br>
+(For other hot spot events, see <a href="HotSpotListener.htm">HotSpotListener</a>.)<br><br>
+To handle these events, either implement this interface, or extend the abstract class <a href="HotSpotMotionAdapter.htm">HotSpotMotionAdapter</a> overriding only the methods of interest. <a href="ChartViewer.addHotSpotMotionListener.htm">ChartViewer.addHotSpotMotionListener</a> can then be used to register the handler object to the ChartViewer.
+<br><br>
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Method</th><th width="19%">Inherited</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td><a href="HotSpotMotionListener.hotSpotMoved.htm">hotSpotMoved</a></td><td>(Self)</td><td>The system will call this method when the mouse moves over a hot spot.</td></tr><tr><td><a href="HotSpotMotionListener.hotSpotDragged.htm">hotSpotDragged</a></td><td>(Self)</td><td>The system will call this method when the mouse button is pressed and the mouse moves over a hot spot.</td>
+</tr>
+</table>
+
+</div>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

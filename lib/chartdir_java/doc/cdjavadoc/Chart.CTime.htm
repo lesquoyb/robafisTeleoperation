@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<Title>Chart.CTime</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1"><a href="Chart.htm">Chart</a>.CTime</p>
+<hr class="separator">
+<p class="heading2a">Usage</p>
+<div class="content">
+public static double CTime(java.util.Date time)
+</div>
+<p class="heading2">Description</p>
+<div class="content">
+Converts a java.util.Date to ChartDirector's <a href="dateformat.htm">date/time</a> format.<br><br>
+In common date/time charts, the x-axis represents dates/times, while the y-axis represents numeric data. For these cases, ChartDirector provides overloaded methods that supports both numeric values and java.util.Date values as inputs.<br><br>
+However, it is possible in some special applications, both x and y-axes can represent dates/times. ChartDirector supports this type of usage, but its API only allows "double precision numbers" as y-value inputs. In these cases, CTime can be used to convert java.util.Date to ChartDirector's <a href="dateformat.htm">date/time</a> format, which uses double precision numbers to represent dates/times.
+</div>
+<p class="heading2">Arguments</p>
+<div class="content">
+<table border="1" cellpadding="5" cellspacing="0" width="98%"> 
+<tr>
+<th width="19%">Argument</th><th width="19%">Default</th><th width="60%">Description</th>
+</tr>
+<tr>
+<td>time</td><td>(Mandatory)</td><td>A java.util.Date object.</td>
+</tr>
+</table>
+</div>
+<p class="heading2">Return Value</p>
+<div class="content">
+A number representing dates/time in ChartDirector's <a href="dateformat.htm"> date/time</a> format.
+</div>
+<br><hr class="separator">
+<div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div>
+</body>
+</HTML>

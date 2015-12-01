@@ -1,0 +1,15 @@
+<HTML>
+<HEAD>
+<Title>The DBTable Class</Title>
+<link type='text/css' rel='Stylesheet' href="maxchartapi.css" />
+</HEAD>
+<body bgcolor="#FFFFFF" text="#000000" topmargin="0" leftmargin="0" rightmargin="0" marginwidth="0" marginheight="0">
+<p class="heading0">ChartDirector 6.0 (Java Edition)</p>
+<p class="heading1">The DBTable Class</p>
+<hr class="separator">
+<div class="content">The ChartDirector API is designed to accept data values as array variables, which is the most flexible approach.<br><br>
+In Java, access to database is commonly through JDBC. Database query results are usually represented by java.sql.ResultSet objects. To use data from database to draw charts, one simply needs to read data from java.sql.ResultSet objects to array variables and pass them to ChartDirector.<br><br>
+To simplify things further, ChartDirector comes with a utility class <a href="DBTable.htm">DBTable</a>. This class accepts java.sql.ResultSet objects as input, and creates arrays representing the columns of the query result. These arrays may then be used by ChartDirector to draw charts, or can be manipulated further (eg. using ChartDirector <a href="ArrayMath.htm">ArrayMath</a> to compute moving averages, moving standard deviations, curve fitting, etc.)<br><br>
+Because of its convenience, all database examples in this documentation will use the <a href="DBTable.htm">DBTable</a> class to read data from java.sql.ResultSet objects.</div><br>
+<hr class="separator"><div class="copyright">&copy; 2015 Advanced Software Engineering Limited. All rights reserved.</div></body>
+</HTML>

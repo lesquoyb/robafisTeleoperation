@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="lib" path="lib/jaw.jar"/>
 	<classpathentry kind="lib" path="lib/XboxController.jar"/>
+	<classpathentry kind="lib" path="D:/developpement/robafis/code/robafisTeleoperation/lib/chartdir_java/WEB-INF/lib/ChartDirector.jar" sourcepath="lib/chartdir_java/WEB-INF/classes"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

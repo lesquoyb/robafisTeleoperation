@@ -3,8 +3,9 @@ package model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import controller.XBoxCtrlListener.Movement;
 
@@ -14,10 +15,19 @@ public class BluetoothManager {
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	int PORT = 5000;
+	public List<Double> colours;
+	public List<Double> gyro;
+	public List<Double> dist;
 	public BluetoothManager(){
 		socket = null;
+		colours = new ArrayList<>();
+		gyro = new ArrayList<>();
+		dist = new ArrayList<>();
+	
+	
 	}
 
+	
 	public boolean connect(String ip){
 		try {
 			socket = new Socket(ip, PORT);
@@ -37,7 +47,7 @@ public class BluetoothManager {
 	
 	}
 	
-	
+
 	public void listen(){
 		String fromclient;
 
@@ -48,11 +58,45 @@ public class BluetoothManager {
 			while( ! socket.isClosed()) {
 					fromclient = bufferedReader.readLine();
 					System.out.println(fromclient);
+					if(fromclient.startsWith("colors: ")){
+						setColors(fromclient.split("colors: ")[1]);
+					}
+					else if(fromclient.startsWith("gyro: ")){
+						setGyro(fromclient.split("gyro: ")[1]);
+					}
+					else if(fromclient.startsWith("dist: ")){
+						//setDist(fromclient.split("dist: ")[1]);
+					}
 			}
 		} catch (IOException e) {
 			
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println(e.getMessage());
+		}
+	}
+	
+	private void setColors(String colors){
+		String[] tmp = colors.split(" ");
+		colours.clear();
+		for(String col : tmp){
+			colours.add(Double.parseDouble(col));
+		}
+	}
+	
+	
+	private void setGyro(String s){
+		String[] g = s.split(" ");
+		gyro.clear();
+		for(String val : g){
+			gyro.add(Double.parseDouble(val));
+		}
+	}
+	
+	private void setDist(String s){
+		String[] g = s.split(" ");
+		dist.clear();
+		for(String val : g){
+			dist.add(Double.parseDouble(val));
 		}
 	}
 	
@@ -78,11 +122,11 @@ public class BluetoothManager {
 					}
 					toSend += trigger + ":" + trig + "\n";
 				}
-				System.out.println(toSend);
 				socket.getOutputStream().write(toSend.getBytes());
+				
 			}
 			catch(Exception e ){
-				System.out.println("erreur");
+				System.out.println("erreur d'envoi bluetooth: " + e.getMessage());
 			}
 		}
 	}

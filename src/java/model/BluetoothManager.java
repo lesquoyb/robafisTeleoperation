@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import controller.XBoxCtrlListener.Movement;
 
@@ -24,13 +26,14 @@ public class BluetoothManager {
 		gyro = new ArrayList<>();
 		dist = new ArrayList<>();
 
-
 	}
 
-
-	public boolean connect(String ip){
+	public static final Lock l = new ReentrantLock();
+	public synchronized boolean connect(String ip){
 		try {
 			socket = new Socket(ip, PORT);
+			l.lock();
+
 			Thread t = new Thread() {
 
 				@Override
@@ -48,7 +51,7 @@ public class BluetoothManager {
 	}
 
 
-	public void listen(){
+	public synchronized void listen(){
 		String fromclient;
 
 
@@ -66,6 +69,10 @@ public class BluetoothManager {
 				}
 				else if(fromclient.startsWith("dist: ")){
 					//setDist(fromclient.split("dist: ")[1]);
+				}
+				else if(fromclient.startsWith("ready")){
+					l.unlock();
+					System.out.println("fuck");
 				}
 			}
 		} catch (IOException e) {
@@ -100,16 +107,63 @@ public class BluetoothManager {
 		}
 	}
 
+	int 	YMAXSPEED = 500,
+			XMAXSPEED = 200;
+	static final double dead_zone = 0.1;
 
-	public void sendMovement(Movement m) {
-		if (socket != null && socket.isConnected() && !socket.isClosed()){
+	public String movement(Movement m){
+		double speedR, speedL;
+		double y, x;
+		double radians = Math.toRadians(m.direction);
+		y = apply_dead_zone(Math.cos(radians) * m.magnitude);
+		x = apply_dead_zone(Math.sin(radians) * m.magnitude);
+		
+		speedR = speedL = YMAXSPEED * y;
+
+
+		if (-0.8 < x && x < 0.8){
+			speedR -= x * XMAXSPEED;
+			speedL += x * XMAXSPEED;
+		}
+		else{
+			speedR += x * XMAXSPEED;
+			speedL -= x * XMAXSPEED;
+			
+		}
+				
+		
+		if ( y == 0 ){
+			if (x > 0.3){
+				speedR = x * YMAXSPEED/2;
+				speedL = x * YMAXSPEED/2;
+			}
+			if (-0.3 > x){
+				speedR = x * YMAXSPEED/2;
+				speedL = x * YMAXSPEED/2;
+			}
+		}
+
+		return "move:"
+				+ (int) speedL
+				+","
+				+ (int) speedR
+				+"\n";
+
+	}
+
+	public double apply_dead_zone(double i ){
+		if( Math.abs(i) < dead_zone){
+			return 0;
+		}
+		return i;
+	}
+	
+	synchronized public void sendMovement(Movement m) {
+		l.lock();
+		if ( socket != null && socket.isConnected() && !socket.isClosed() ){
 			try{
-				double radian = Math.toRadians(m.direction);
-				String toSend = "move:"
-						+(Math.cos(radian) * m.magnitude)
-						+","
-						+(Math.sin(radian) * m.magnitude)
-						+"\n";
+				
+				String toSend = movement(m);
 				
 				System.out.println(toSend);
 
@@ -132,6 +186,7 @@ public class BluetoothManager {
 				System.out.println("erreur d'envoi bluetooth: " + e.getMessage());
 			}
 		}
+		l.unlock();
 	}
 
 

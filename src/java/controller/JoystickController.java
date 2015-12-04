@@ -20,6 +20,14 @@ public class JoystickController implements ActionListener {
 		bluetoothCtrl = b;
 		listener = new XBoxCtrlListener();
 		m.addXboxControllerListener(listener);
+		bluetoothCtrl.model.bController = this;
+	}
+	
+	public void setView(JoystickPanel j){
+		view = j;
+	}
+	
+	public void start(){
 		Timer t = new Timer();
 		t.schedule( new TimerTask() {
 			
@@ -28,12 +36,8 @@ public class JoystickController implements ActionListener {
 				bluetoothCtrl.sendAll(listener);
 			}
 		},0, 50 ) ;	
+
 	}
-	
-	public void setView(JoystickPanel j){
-		view = j;
-	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

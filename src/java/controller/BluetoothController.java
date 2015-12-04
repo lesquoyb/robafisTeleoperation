@@ -2,19 +2,22 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import model.BluetoothManager;
 import view.BluetoothPanel;
 
 public class BluetoothController implements ActionListener{
 
-	private BluetoothPanel view;
-	private BluetoothManager model;
+	public BluetoothPanel view;
+	public BluetoothManager model;
 	
 	
 	public BluetoothController(BluetoothManager m) {
 		model = m;
 	}
+	
 	
 	
 	@Override
@@ -35,5 +38,6 @@ public class BluetoothController implements ActionListener{
 		model.sendMovement(x.movement);
 	}
 	
+
 	
 }

@@ -6,9 +6,8 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
+import controller.JoystickController;
 import controller.XBoxCtrlListener.Movement;
 
 public class BluetoothManager {
@@ -20,6 +19,9 @@ public class BluetoothManager {
 	public List<Double> colours;
 	public List<Double> gyro;
 	public List<Double> dist;
+
+	public JoystickController bController;
+
 	public BluetoothManager(){
 		socket = null;
 		colours = new ArrayList<>();
@@ -28,11 +30,9 @@ public class BluetoothManager {
 
 	}
 
-	public static final Lock l = new ReentrantLock();
-	public synchronized boolean connect(String ip){
+	public boolean connect(String ip){
 		try {
 			socket = new Socket(ip, PORT);
-			l.lock();
 
 			Thread t = new Thread() {
 
@@ -51,28 +51,28 @@ public class BluetoothManager {
 	}
 
 
-	public synchronized void listen(){
+	public void listen(){
 		String fromclient;
-
-
 		try {
 			bufferedReader = new BufferedReader(new InputStreamReader (socket.getInputStream()));
 
 			while( ! socket.isClosed()) {
 				fromclient = bufferedReader.readLine();
 				System.out.println(fromclient);
-				if(fromclient.startsWith("colors: ")){
-					setColors(fromclient.split("colors: ")[1]);
-				}
-				else if(fromclient.startsWith("gyro: ")){
-					setGyro(fromclient.split("gyro: ")[1]);
-				}
-				else if(fromclient.startsWith("dist: ")){
-					//setDist(fromclient.split("dist: ")[1]);
-				}
-				else if(fromclient.startsWith("ready")){
-					l.unlock();
-					System.out.println("fuck");
+				if(fromclient != null){
+					if(fromclient.startsWith("colors: ")){
+						setColors(fromclient.split("colors: ")[1]);
+					}
+					else if(fromclient.startsWith("gyro: ")){
+						setGyro(fromclient.split("gyro: ")[1]);
+					}
+					else if(fromclient.startsWith("dist: ")){
+						//setDist(fromclient.split("dist: ")[1]);
+					}
+					else if(fromclient.startsWith("ready")){
+						System.out.println("fuck");
+						bController.start();
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -109,7 +109,7 @@ public class BluetoothManager {
 
 	int 	YMAXSPEED = 500,
 			XMAXSPEED = 200;
-	static final double dead_zone = 0.1;
+	static final double dead_zone = 0.3;
 
 	public String movement(Movement m){
 		double speedR, speedL;
@@ -117,37 +117,18 @@ public class BluetoothManager {
 		double radians = Math.toRadians(m.direction);
 		y = apply_dead_zone(Math.cos(radians) * m.magnitude);
 		x = apply_dead_zone(Math.sin(radians) * m.magnitude);
-		
+
 		speedR = speedL = YMAXSPEED * y;
 
+		speedR += x * XMAXSPEED;
+		speedL -= x * XMAXSPEED;
 
-		if (-0.8 < x && x < 0.8){
-			speedR -= x * XMAXSPEED;
-			speedL += x * XMAXSPEED;
-		}
-		else{
-			speedR += x * XMAXSPEED;
-			speedL -= x * XMAXSPEED;
-			
-		}
-				
-		
-		if ( y == 0 ){
-			if (x > 0.3){
-				speedR = x * YMAXSPEED/2;
-				speedL = x * YMAXSPEED/2;
-			}
-			if (-0.3 > x){
-				speedR = x * YMAXSPEED/2;
-				speedL = x * YMAXSPEED/2;
-			}
-		}
 
 		return "move:"
-				+ (int) speedL
-				+","
-				+ (int) speedR
-				+"\n";
+		+ (int) speedL
+		+","
+		+ (int) speedR
+		+"\n";
 
 	}
 
@@ -157,14 +138,13 @@ public class BluetoothManager {
 		}
 		return i;
 	}
-	
-	synchronized public void sendMovement(Movement m) {
-		l.lock();
+
+	public void sendMovement(Movement m) {
 		if ( socket != null && socket.isConnected() && !socket.isClosed() ){
 			try{
-				
+
 				String toSend = movement(m);
-				
+
 				System.out.println(toSend);
 
 				double trig = m.RTrigger - m.LTrigger;
@@ -186,8 +166,6 @@ public class BluetoothManager {
 				System.out.println("erreur d'envoi bluetooth: " + e.getMessage());
 			}
 		}
-		l.unlock();
 	}
-
 
 }

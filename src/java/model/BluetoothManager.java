@@ -136,7 +136,7 @@ public class BluetoothManager {
 		if( Math.abs(i) < dead_zone){
 			return 0;
 		}
-		return i;
+		return i - dead_zone;
 	}
 
 	public void sendMovement(Movement m) {

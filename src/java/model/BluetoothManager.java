@@ -118,10 +118,10 @@ public class BluetoothManager {
 		y = apply_dead_zone(Math.cos(radians) * m.magnitude);
 		x = apply_dead_zone(Math.sin(radians) * m.magnitude);
 
-		speedR = speedL = YMAXSPEED * y;
+		speedR = speedL = YMAXSPEED * y * m.vitesse;
 
-		speedR += x * XMAXSPEED;
-		speedL -= x * XMAXSPEED;
+		speedR += x * XMAXSPEED * m.vitesse;
+		speedL -= x * XMAXSPEED * m.vitesse;
 
 
 		return "move:"
@@ -158,6 +158,11 @@ public class BluetoothManager {
 					trigger += "L";
 				}
 				toSend += trigger + ":" + trig + "\n";
+				
+				if ( m.end ){
+					toSend = "end_";
+					m.end = false;
+				}
 
 				socket.getOutputStream().write(toSend.getBytes());
 

@@ -9,8 +9,10 @@ public class XBoxCtrlListener implements XboxControllerListener{
 	public class Movement{
 		public double direction;
 		public double magnitude;
+		public double vitesse = 0.5;
 		public double RTrigger;
 		public double LTrigger;
+		public boolean end = false;
 	}
 	
 	public Movement movement;
@@ -20,14 +22,12 @@ public class XBoxCtrlListener implements XboxControllerListener{
 
 	@Override
 	public void buttonA(boolean pressed) {
-		System.out.println("a pressed");
-		
+		movement.vitesse/=2;
 	}
 
 	@Override
 	public void buttonB(boolean pressed) {
-		System.out.println("b pressed");
-		
+		movement.vitesse*=2;		
 	}
 
 	@Override
@@ -50,8 +50,7 @@ public class XBoxCtrlListener implements XboxControllerListener{
 
 	@Override
 	public void start(boolean pressed) {
-		System.out.println("start pressed");
-		
+		movement.end = true;
 	}
 
 	@Override

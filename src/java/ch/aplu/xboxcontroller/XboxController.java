@@ -60,10 +60,11 @@ public class XboxController
    */
   public XboxController()
   {
-    if (is64bit())
-      init("xboxcontroller64", 1, 50, 50);
-    else
-      init("xboxcontroller", 1, 50, 50);
+      if (is64bit())
+        init("xboxcontroller64", 1, 50, 50);
+      else
+        init("xboxcontroller", 1, 50, 50);
+   
   }
 
   /**

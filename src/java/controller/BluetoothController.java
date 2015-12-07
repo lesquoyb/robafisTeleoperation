@@ -6,11 +6,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import model.BluetoothManager;
-import view.BluetoothPanel;
+import view.SettingsPanel;
 
 public class BluetoothController implements ActionListener{
 
-	public BluetoothPanel view;
+	public SettingsPanel view;
 	public BluetoothManager model;
 	
 	
@@ -30,7 +30,7 @@ public class BluetoothController implements ActionListener{
 		}
 	}
 	
-	public void addView(BluetoothPanel v){
+	public void addView(SettingsPanel v){
 		view = v;
 	}
 	

@@ -1,17 +1,15 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import ch.aplu.xboxcontroller.XboxController;
-import view.JoystickPanel;
+import view.SettingsPanel;
 
-public class JoystickController implements ActionListener {
+public class JoystickController {
 
 	public XboxController model;
-	public JoystickPanel view;
+	private SettingsPanel view;
 	public BluetoothController bluetoothCtrl;
 	public XBoxCtrlListener listener;
 	
@@ -19,12 +17,22 @@ public class JoystickController implements ActionListener {
 		model = m;
 		bluetoothCtrl = b;
 		listener = new XBoxCtrlListener();
-		m.addXboxControllerListener(listener);
-		bluetoothCtrl.model.bController = this;
+		
+			m.addXboxControllerListener(listener);
+			bluetoothCtrl.model.bController = this;
+		
 	}
 	
-	public void setView(JoystickPanel j){
+	public void setView(SettingsPanel j){
 		view = j;
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				refreshControllerView(listener.connected);
+			}
+		}, 0, 10);
 	}
 	
 	public void start(){
@@ -33,26 +41,17 @@ public class JoystickController implements ActionListener {
 			
 			@Override
 			public void run() {
-				bluetoothCtrl.sendAll(listener);
+				if(listener.connected){
+					bluetoothCtrl.sendAll(listener);
+				}
 			}
 		},0, 50 ) ;	
 
 	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		// TODO 
-		String cmd = e.getActionCommand();
-		switch(cmd){
-		case "refresh":
-			
-			break;
-		case "connect":
-			
-			break;
-		default:
-			System.out.println("commande non prise en charge");
-		}
+
+	
+	public void refreshControllerView(boolean connected){
+		view.refreshControllerConnected(connected);
 	}
 
 }

@@ -16,8 +16,10 @@ public class XBoxCtrlListener implements XboxControllerListener{
 	}
 	
 	public Movement movement;
+	public boolean connected;
 	public XBoxCtrlListener() {
 		movement = new Movement();
+		connected = false;
 	}
 
 	@Override
@@ -114,7 +116,7 @@ public class XBoxCtrlListener implements XboxControllerListener{
 
 	@Override
 	public void isConnected(boolean connected) {
-		System.out.println("is connected");
+		this.connected = connected;
 		
 	}
 	

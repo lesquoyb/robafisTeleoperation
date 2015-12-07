@@ -1,4 +1,4 @@
-package view;
+package view.graphs;
 
 import javax.swing.Timer;
 
@@ -19,8 +19,6 @@ public class ColourGraph extends ChartViewer {
 		setChart(newChart());
 		double[] t = new double[0];
 		update(t);
-  	
-	
 	}
 	
 	public XYChart newChart(){
@@ -31,7 +29,7 @@ public class ColourGraph extends ChartViewer {
 
         chart.addTitle("couleurs lues dans le temps", "Times New Roman Bold Italic", 18);
 
-        chart.yAxis().setTitle("Valeur moyenne de gris mesurée", "Arial Bold Italic", 12);
+        chart.yAxis().setTitle("Valeur moyenne de gris mesurï¿½e", "Arial Bold Italic", 12);
 
         chart.xAxis().setTitle("temps (en dizaines de millisecondes)", "Arial Bold Italic", 12);
         chart.yAxis().setLinearScale(0, 255, 30);

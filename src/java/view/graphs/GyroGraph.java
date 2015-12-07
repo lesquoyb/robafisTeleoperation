@@ -1,4 +1,4 @@
-package view;
+package view.graphs;
 
 import java.awt.FlowLayout;
 
@@ -8,28 +8,17 @@ import ChartDirector.AngularMeter;
 import ChartDirector.Chart;
 import ChartDirector.ChartViewer;
 
-public class GyroPanel extends JPanel{
+public class GyroGraph extends ChartViewer{
 
-	ChartViewer angularViewer;
-	ChartViewer graphViewer;
 	
-	public GyroPanel(){
-		super();
-		angularViewer = new ChartViewer();
-		graphViewer = new ChartViewer();
-		setLayout(new FlowLayout(FlowLayout.LEFT));
-		add(angularViewer);
-		add(graphViewer, 1);
-		
-		createGyro(angularViewer, 60);
+	public GyroGraph(){
+		super();		
+		update( 60);
 		
 	}
 	
-	public void createChart(){
-		
-	}
-	
-    public void createGyro(ChartViewer viewer, int currentDegree){
+
+    public void update( int currentDegree){
         // Create an AngularMeter object of size 300 x 300 pixels with transparent background
         AngularMeter m = new AngularMeter(300, 300, Chart.Transparent);
 
@@ -60,7 +49,7 @@ public class GyroPanel extends JPanel{
         // Add a semi-transparent red (0x7fff6666) pointer using the arrow shape
         m.addPointer(currentDegree, 0x7fff6666, 0xff6666).setShape(Chart.ArrowPointer2);
 
-        angularViewer.setChart(m);
+        this.setChart(m);
     }
 
 	

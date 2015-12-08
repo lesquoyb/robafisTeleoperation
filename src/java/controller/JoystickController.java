@@ -19,6 +19,7 @@ public class JoystickController {
 		listener = new XBoxCtrlListener();
 		
 			m.addXboxControllerListener(listener);
+			listener.connected = m.isConnected();
 			bluetoothCtrl.model.bController = this;
 		
 	}

@@ -10,6 +10,7 @@ public class XBoxCtrlListener implements XboxControllerListener{
 		public double direction;
 		public double magnitude;
 		public double vitesse = 0.5;
+		public double vitesseP = 1;
 		public double RTrigger;
 		public double LTrigger;
 		public boolean end = false;
@@ -24,12 +25,12 @@ public class XBoxCtrlListener implements XboxControllerListener{
 
 	@Override
 	public void buttonA(boolean pressed) {
-		movement.vitesse/=2;
+		movement.vitesse/=1.5;
 	}
 
 	@Override
 	public void buttonB(boolean pressed) {
-		movement.vitesse*=2;		
+		movement.vitesse*=1.5;		
 	}
 
 	@Override
@@ -57,14 +58,12 @@ public class XBoxCtrlListener implements XboxControllerListener{
 
 	@Override
 	public void leftShoulder(boolean pressed) {
-		System.out.println("left shoulder");
-		
+		movement.vitesseP /= 1.5;
 	}
 
 	@Override
 	public void rightShoulder(boolean pressed) {
-		System.out.println("right shouler");
-		
+		movement.vitesseP *= 1.5;
 	}
 
 	@Override

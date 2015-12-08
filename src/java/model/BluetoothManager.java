@@ -68,6 +68,9 @@ public class BluetoothManager {
 						phaseController.changePhase(Phases.Teleop);
 						bController.start();
 					}
+					else if (fromRobot.startsWith("c:")){
+						System.out.println("couleur: "+  fromRobot.substring(2));
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -145,7 +148,7 @@ public class BluetoothManager {
 				} else {
 					trigger += "L";
 				}
-				toSend += trigger + ":" + trig + "\n";
+				toSend += trigger + ":" + trig * m.vitesseP + "\n";
 
 				if (m.end) {
 					toSend = "end_";

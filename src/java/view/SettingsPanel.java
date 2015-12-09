@@ -33,7 +33,7 @@ public class SettingsPanel extends JPanel{
 		JButton connection = new JButton("connexion");
 		connection.addActionListener(listener);
 		add(connection);
-		
+		setPreferredSize(new Dimension(500, 70));
 		connectionLbl = new JLabel("veuillez connecter un joystick");
 		connectionLbl.setBackground(Color.red);
 		add(connectionLbl);

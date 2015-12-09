@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
@@ -23,15 +24,17 @@ public class MainView extends JFrame {
 		
 		BluetoothManager bluetoothManager = new BluetoothManager();
 		BluetoothController b = new BluetoothController(bluetoothManager);
-		
-		
-		JPanel top = new JPanel(new GridLayout(2, 1));
+		FlowLayout layout = new FlowLayout();
+		layout.setAlignment(FlowLayout.LEADING);
+		JPanel top = new JPanel(layout);
 		JoystickController jCtrl = new JoystickController(new XboxController(), b);
-		top.add(new SettingsPanel(b, jCtrl ));
+		SettingsPanel s = new SettingsPanel(b, jCtrl );
+		top.add(s);
 		JPanel tmp = new JPanel(new FlowLayout());
 		tmp.add(new JoystickView(jCtrl));
 		tmp.add(new PhasePanel(bluetoothManager));
 		top.add(tmp);
+		
 		add(top, BorderLayout.NORTH);
 
 		add(new GraphsPanel(bluetoothManager), BorderLayout.SOUTH);

@@ -58,12 +58,12 @@ public class XBoxCtrlListener implements XboxControllerListener{
 
 	@Override
 	public void leftShoulder(boolean pressed) {
-		movement.vitesseP = Math.max(movement.vitesseP - 0.3, 0.3);
+		movement.vitesseP = Math.max(movement.vitesseP - 1, 1);
 	}
 
 	@Override
 	public void rightShoulder(boolean pressed) {
-		movement.vitesseP = Math.min(movement.vitesseP + 0.3, 2);
+		movement.vitesseP = Math.min(movement.vitesseP + 1, 4);
 	}
 
 	@Override

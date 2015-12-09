@@ -48,6 +48,7 @@ public class JoystickController {
 	
 	public void start(){
 		Timer t = new Timer();
+		listener.movement.end = false;
 		t.schedule( new TimerTask() {
 			
 			@Override

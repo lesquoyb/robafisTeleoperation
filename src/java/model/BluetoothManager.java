@@ -54,7 +54,8 @@ public class BluetoothManager {
 		String fromRobot;
 		try {
 			bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			phaseController.changePhase(Phases.FollowL);
+			phaseController.changePhase(Phases.Color);
+
 			while (!socket.isClosed()) {
 				fromRobot = bufferedReader.readLine();
 				if (fromRobot != null) {
@@ -69,7 +70,8 @@ public class BluetoothManager {
 						bController.start();
 					}
 					else if (fromRobot.startsWith("c:")){
-						phaseController.changePhase(Phases.Color);
+						phaseController.changePhase(Phases.FollowL);
+
 						System.out.println("couleur: "+  fromRobot.substring(2));
 					}
 				}

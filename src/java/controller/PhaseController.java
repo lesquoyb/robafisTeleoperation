@@ -24,6 +24,9 @@ public class PhaseController {
             case FollowL:
                 view.loadFollowingLine();
                 break;
+            case Color:
+            	view.loadChooseColor();
+            	break;
             case End:
                 view.loadEnd();
                 break;

@@ -20,6 +20,7 @@ public class PhasePanel  extends JPanel{
 
 	public BufferedImage image;
 	public static final String FOLLOWL_IMG_PATH = "resources/follow.jpg";
+	public static final String COLORWHEEL_IMG_PATH = "resources/colorwheel.jpg";
 	public static final String INIT_IMG_PATH = "resources/init.jpg";
 	public static final String TELEOP_IMG_PATH = "resources/teleop.jpg";
 	public static final String END_IMG_PATH  = "resources/end.jpg";
@@ -36,7 +37,7 @@ public class PhasePanel  extends JPanel{
 	private void loadImage(String s){
 		try {
 			image = ImageIO.read(new File(s));
-			setPreferredSize(new Dimension(image.getWidth(), image.getHeight() +30));
+			setPreferredSize(new Dimension(image.getWidth(), image.getHeight() + 30));
 			super.repaint();
 		}
 		catch(Exception e){
@@ -58,8 +59,14 @@ public class PhasePanel  extends JPanel{
 		loadImage(TELEOP_IMG_PATH);
 	}
 
+	public void loadChooseColor(){
+		loadImage(COLORWHEEL_IMG_PATH);
+	}
+
 	public void loadEnd(){
 		loadImage(END_IMG_PATH);
 	}
+
+
 
 }

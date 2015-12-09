@@ -69,6 +69,7 @@ public class BluetoothManager {
 						bController.start();
 					}
 					else if (fromRobot.startsWith("c:")){
+						phaseController.changePhase(Phases.Color);
 						System.out.println("couleur: "+  fromRobot.substring(2));
 					}
 				}
@@ -139,9 +140,10 @@ public class BluetoothManager {
 				System.out.println(toSend);
 
 				double trig = m.RTrigger - m.LTrigger;
-				if (Math.abs(trig) < 0.2)
+				if (Math.abs(trig) < 0.2){
 					trig = 0;
-
+				}
+				
 				String trigger = "trigger";
 				if (trig > 0) {
 					trigger += "R";

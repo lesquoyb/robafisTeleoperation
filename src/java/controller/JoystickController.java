@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import ch.aplu.xboxcontroller.XboxController;
+import view.JoystickView;
 import view.SettingsPanel;
 
 public class JoystickController {
@@ -24,6 +25,11 @@ public class JoystickController {
 		
 	}
 	
+	JoystickView joyView;
+	public void addJoystickView(JoystickView v){
+		joyView = v;
+	}
+	
 	public void setView(SettingsPanel j){
 		view = j;
 		Timer t = new Timer();
@@ -32,6 +38,10 @@ public class JoystickController {
 			@Override
 			public void run() {
 				refreshControllerView(listener.connected);
+				if(listener.connected && joyView != null){
+					joyView.armsSpeed.setText(Integer.toString((int)(10*listener.movement.vitesseP)));
+					joyView.motorSpeed.setText(Integer.toString((int)(10*listener.movement.vitesse)));
+				}
 			}
 		}, 0, 10);
 	}

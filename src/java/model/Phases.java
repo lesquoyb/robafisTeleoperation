@@ -7,5 +7,6 @@ public enum Phases {
     Init,
     FollowL,
     Teleop,
+    Color,
     End
 }
